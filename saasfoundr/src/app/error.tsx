@@ -28,27 +28,26 @@ export default function Error({
       <div className="space-y-6 text-center relative z-10">
         <div className="space-y-2">
           <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-orange-400 to-yellow-400 sm:text-5xl">
-            System Malfunction
+            OOPS ! An error occured
           </h1>
           <div className="h-1 w-40 mx-auto bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 rounded-full" />
         </div>
         <p className="mx-auto max-w-[42rem] text-gray-400 sm:text-lg">
-          Our quantum processors encountered an unexpected glitch. 
-          The maintenance droids have been dispatched to investigate.
+          An error has occured, please try again or go back home. Happy browsing !
         </p>
         <div className="mx-auto max-w-xs space-y-3">
           <Button 
             onClick={reset}
             className="w-full bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 hover:from-red-600 hover:via-orange-600 hover:to-yellow-600 text-white border-0"
           >
-            Recalibrate Systems
+            Try again
           </Button>
           <Button
             onClick={() => window.location.href = '/'}
             variant="outline"
-            className="w-full border-gray-700 text-gray-300 hover:text-white hover:bg-gray-800 hover:border-gray-600"
+            className="w-full border-gray-700 text-gray-500 hover:text-white hover:bg-gray-800 hover:border-gray-600"
           >
-            Return to Base
+            Take me home
           </Button>
         </div>
         {process.env.NODE_ENV === 'development' && (
