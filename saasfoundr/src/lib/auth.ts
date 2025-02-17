@@ -32,7 +32,7 @@ export const {
       from: "auth@saasfoundr.com",
       async sendVerificationRequest({ identifier: email, url }) {
         try {
-          const html = render(SignInEmail({ url }))
+          const html = await render(SignInEmail({ url }))
           
           await resend.emails.send({
             from: "SaaSFoundr <auth@saasfoundr.com>",
