@@ -48,7 +48,7 @@ export default function Home() {
         </nav>
         <Link
           href="/waitlist"
-          className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+          className="px-6 py-2 bg-white text-black font-semibold rounded-lg hover:bg-gray-200"
         >
           Join Waitlist
         </Link>
@@ -62,7 +62,7 @@ export default function Home() {
 
         {/* Join Waitlist Form */}
         <div>
-          <form onSubmit={handleSubmit} className="flex gap-4">
+          <form onSubmit={handleSubmit} className="flex gap-4 items-center">
             <Input
               type="email"
               id="email"
@@ -70,12 +70,12 @@ export default function Home() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-4 md:min-w-[300px] py-6 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               placeholder="Your Email Address"
             />
             <Button
               type="submit"
-              className="px-6 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
+              className="px-6 py-6 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 font-semibold"
               disabled={loading}
             >
               {loading ? "Joining..." : "Join Waitlist"}
