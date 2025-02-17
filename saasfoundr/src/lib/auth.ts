@@ -29,13 +29,13 @@ export const {
     }),
     Resend({
       apiKey: process.env.AUTH_RESEND_KEY,
-      from: "auth@saasfoundr.com",
+      from: "no-reply@aiseogen.com",
       async sendVerificationRequest({ identifier: email, url }) {
         try {
           const html = await render(SignInEmail({ url }))
           
           await resend.emails.send({
-            from: "SaaSFoundr <auth@saasfoundr.com>",
+            from: "SaaSFoundr <no-reply@aiseogen.com>",
             to: email,
             subject: "Sign in to SaaSFoundr",
             html,
