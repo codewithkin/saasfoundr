@@ -14,7 +14,7 @@ export default function SignUp() {
     e.preventDefault()
     setIsLoading(true)
     try {
-      await signIn("resend", { email, callbackUrl: "/home" })
+      await signIn("resend", { email, callbackUrl: "/onboarding" })
     } catch (error) {
       console.error("Sign up error:", error)
     } finally {
@@ -25,7 +25,7 @@ export default function SignUp() {
   const handleProviderSignUp = (provider: "github" | "google") => {
     setIsLoading(true)
     try {
-      signIn(provider, { callbackUrl: "/home" })
+      signIn(provider, { callbackUrl: "/onboarding" })
     } catch (error) {
       console.error(`${provider} sign up error:`, error)
       setIsLoading(false)
