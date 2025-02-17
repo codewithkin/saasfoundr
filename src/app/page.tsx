@@ -1,3 +1,5 @@
+"use client";
+
 import Feature from "@/components/mine/Feature";
 import Footer from "@/components/mine/Footer";
 import Hero from "@/components/mine/Hero";

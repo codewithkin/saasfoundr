@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     question: "When will SaaSFoundr launch?",
-    answer: "We're currently in the final stages of development and plan to launch in Q2 2024. Join our waitlist to be notified when we go live and get exclusive early access benefits."
+    answer: "We're currently in the final stages of development and plan to launch in Q2 2025. Join our waitlist to be notified when we go live and get exclusive early access benefits."
   },
   {
     question: "How does the matching process work?",

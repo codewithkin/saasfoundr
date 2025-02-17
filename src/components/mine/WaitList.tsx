@@ -96,7 +96,7 @@ export default function WaitList() {
           )}
 
           <p className="text-gray-400 text-sm mt-4">
-            Join {Math.floor(Math.random() * 100) + 400}+ founders already on the waitlist
+            Join 450+ founders already on the waitlist
           </p>
         </div>
 
