@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Rocket, Users, Target, LineChart } from "lucide-react";
+import Navbar from "@/components/mine/navbars/Main";
+import Footer from "@/components/mine/Footer";
 
 export default function About() {
   const fadeIn = {
@@ -60,6 +62,7 @@ export default function About() {
 
   return (
     <div className="bg-white">
+      <Navbar />
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-24 pb-20">
         <div className="absolute inset-0 bg-gradient-to-b from-blue-50 via-white to-white" />
@@ -216,6 +219,7 @@ export default function About() {
           </motion.div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }
