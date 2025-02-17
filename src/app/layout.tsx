@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Poppins } from "next/font/google"; // Import Poppins font
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Define the Poppins font
+const poppins = Poppins({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 // Define the SEO metadata
@@ -57,7 +53,7 @@ export default function RootLayout({
       <head>
         {/* Other SEO-related tags will be injected by Next.js automatically */}
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${poppins.className} antialiased`}>
         {children}
       </body>
     </html>
