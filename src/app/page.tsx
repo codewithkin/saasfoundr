@@ -156,42 +156,43 @@ export default function Home() {
       )}
 
       {/* Main Section */}
-      <main className="flex flex-col items-center justify-center px-12 space-y-8 text-center hero-section w-full h-full">
+      <main className="flex flex-col items-center justify-center px-4 md:px-12 space-y-8 text-center hero-section w-full h-full">
         {/* Header Section with Heading, Subheading, and CTA */}
-        <header className="w-full text-center md:py-64 flex flex-col justify-center items-center gap-8">
+        <header className="w-full text-center py-40 md:py-64 flex flex-col justify-center items-center gap-8">
           {/* Copy (text content) */}
-          <div className="flex flex-col gap-4 items-center justify-center">
+          <div className="flex flex-col items-center justify-center gap-4">
             <motion.h2
-              className="text-7xl font-bold"
+              className="text-4xl leading-10 md:leading-normal md:text-7xl font-medium md:font-semibold"
               variants={headerVariants}
               initial="initial"
               animate="animate"
             >
               The Fastest Way to Find a{" "}
-              <span className="py-1 px-6 rounded-xl bg-blue-500 text-white">
+              <span className="py-1 px-6 rounded-xl bg-blue-500 text-white block md:inline">
                 Startup Partner
               </span>
             </motion.h2>
-          </div>
 
-          <motion.p
-            className="text-lg md:max-w-6xl text-gray-500"
+            <motion.p
+            className="text-s md:text-lg md:max-w-6xl text-gray-500"
             variants={headerVariants}
             initial="initial"
             animate="animate"
             transition={{ duration: 1.5, delay: 0.5 }}
           >
             Find co-founders who complement your skills and vision. Our platform
-            connects you with the right partner to turn your startup idea into a
-            reality. Collaborate, innovate, and build something great together
-            with the right team by your side.
+            connects you with the right partner to turn your startup idea into
+            reality and build something great together
           </motion.p>
+          </div>
+
+          
 
           {/* Join Waitlist Form */}
-          <div>
+          <div className="w-full">
             <form
               onSubmit={handleSubmit}
-              className="flex gap-4 items-center justify-center"
+              className="flex flex-col md:flex-row gap-2 md:gap-4 items-center justify-center"
             >
               <Input
                 type="email"
@@ -200,12 +201,12 @@ export default function Home() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 md:min-w-[300px] py-6 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full md:w-fit px-4 md:min-w-[300px] py-6 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                 placeholder="Your Email Address"
               />
               <Button
                 type="submit"
-                className="px-6 py-6 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 font-semibold"
+                className="px-6 py-6 bg-blue-600 w-full md:w-fit text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 font-semibold"
                 disabled={loading}
               >
                 {loading ? "Joining..." : "Join Waitlist"}
