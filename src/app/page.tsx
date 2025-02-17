@@ -17,6 +17,7 @@ export default function Home() {
     try {
       // Replace this with your actual form submission logic (e.g., API call)
       console.log("Email submitted:", email);
+      
       setEmail(""); // Clear the email input
     } catch (error) {
       console.error("Error submitting email:", error);
@@ -27,7 +28,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center justify-between min-h-screen bg-gray-100">
-      <header className="flex justify-between items-center w-full p-6 bg-blue-600 text-white">
+      <header className="flex justify-between items-center w-full p-6 bg-gray-800 text-white">
         <h1 className="text-3xl font-bold">SaaSFoundr</h1>
         <nav className="space-x-6">
           <Link href="/" className="hover:underline">
