@@ -5,6 +5,28 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
+@keyframes neon-flicker {
+  0% {
+    box-shadow:
+      0 0 2px #7b2cbf,
+      0 0 4px #7b2cbf;
+  }
+  50% {
+    box-shadow:
+      0 0 4px #7b2cbf,
+      0 0 8px #7b2cbf;
+  }
+  100% {
+    box-shadow:
+      0 0 2px #7b2cbf,
+      0 0 4px #7b2cbf;
+  }
+}
+
+.neon-glow {
+  animation: neon-flicker 1.5s infinite alternate;
+  border: 2px solid #7b2cbf;
+}
 
 .feature-background {
   background-color: #000814;
