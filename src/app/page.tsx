@@ -7,7 +7,6 @@ import WaitList from "@/components/mine/WaitList";
 import FAQ from "@/components/mine/FAQ";
 
 export default function Home() {
-  throw new Error ("Oh no!");
   return (
     <div className="flex flex-col bg-gray-100">
       <Navbar />
