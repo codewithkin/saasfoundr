@@ -5,6 +5,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Icons } from "@/components/ui/icons"
+import { cn } from "@/lib/utils"
 
 export default function SignIn() {
   const [email, setEmail] = useState("")
@@ -26,11 +27,11 @@ export default function SignIn() {
     <div className="container relative h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-1 lg:px-0">
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">
+          <h1 className="text-2xl md:text-4xl font-semibold tracking-tight">
             Welcome back
           </h1>
           <p className="text-sm text-muted-foreground">
-            Enter your email to sign in to your account
+            We're sooo happy to see you again ! Please choose a sign in method to continue
           </p>
         </div>
 
@@ -48,8 +49,12 @@ export default function SignIn() {
                 disabled={isLoading}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="focus-visible:ring-blue-600"
               />
-              <Button disabled={isLoading}>
+              <Button 
+                disabled={isLoading}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
                 {isLoading && (
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 )}
@@ -75,6 +80,7 @@ export default function SignIn() {
             variant="outline"
             disabled={isLoading}
             onClick={() => signIn("github", { callbackUrl: "/home" })}
+            className="bg-black text-white hover:bg-black/50 border-0"
           >
             {isLoading ? (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
