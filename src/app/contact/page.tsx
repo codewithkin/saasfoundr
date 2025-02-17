@@ -3,7 +3,7 @@
 import Navbar from "@/components/mine/navbars/Main";
 import Footer from "@/components/mine/Footer";
 import { motion } from "framer-motion";
-import { Mail, MessageSquare, MapPin, Send } from "lucide-react";
+import { Mail, MessageSquare, MapPin, Send, AlertCircle } from "lucide-react";
 import { useState } from "react";
 
 export default function Contact() {
@@ -14,15 +14,41 @@ export default function Contact() {
     message: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({ type: null, message: "" });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // TODO: Implement actual contact form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setSubmitted(true);
-    setIsSubmitting(false);
+    setSubmitStatus({ type: null, message: "" });
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus({ type: "success", message: data.message });
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        setSubmitStatus({ type: "error", message: data.message });
+      }
+    } catch (error) {
+      setSubmitStatus({
+        type: "error",
+        message: "An error occurred. Please try again later.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -93,7 +119,17 @@ export default function Contact() {
         </div>
 
         <div className="max-w-2xl mx-auto">
-          {!submitted ? (
+          {submitStatus.type === "success" ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-green-50 text-green-800 p-8 rounded-lg text-center"
+            >
+              <h3 className="text-2xl font-semibold mb-4">Message Sent Successfully! 🎉</h3>
+              <p className="text-green-700 mb-4">{submitStatus.message}</p>
+              <p className="text-green-600">We'll get back to you as soon as possible!</p>
+            </motion.div>
+          ) : (
             <motion.form
               onSubmit={handleSubmit}
               className="space-y-6"
@@ -101,6 +137,17 @@ export default function Contact() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
+              {submitStatus.type === "error" && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-red-50 text-red-800 p-4 rounded-lg flex items-center gap-2"
+                >
+                  <AlertCircle className="w-5 h-5" />
+                  <p>{submitStatus.message}</p>
+                </motion.div>
+              )}
+
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
@@ -177,15 +224,6 @@ export default function Contact() {
                 )}
               </button>
             </motion.form>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-green-50 text-green-800 p-6 rounded-lg text-center"
-            >
-              <h3 className="text-lg font-semibold mb-2">Message Sent Successfully! 🎉</h3>
-              <p>Thank you for reaching out. We'll get back to you soon!</p>
-            </motion.div>
           )}
         </div>
       </motion.div>
