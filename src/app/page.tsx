@@ -59,7 +59,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col bg-gray-100">
-      <header className="flex justify-between items-center w-full p-6 bg-gray-800 text-white">
+      <div className="flex justify-between items-center w-full p-6 bg-gray-800 text-white">
         <h1 className="text-3xl font-bold">SaaSFoundr</h1>
         <nav className="space-x-6">
           <Link href="/" className="hover:underline">
@@ -84,50 +84,55 @@ export default function Home() {
         >
           Join Waitlist
         </Link>
-      </header>
+      </div>
 
-      <main className="flex flex-col items-center justify-center px-12 md:py-64 space-y-8 text-center hero-section w-full h-full">
-        <h2 className="text-7xl font-bold">The Fastest Way to Find a <span className="py-2 px-6 rounded-xl bg-blue-500 text-white">Startup Partner</span></h2>
-        <p className="text-lg md:max-w-6xl text-gray-500">
-          Find co-founders who complement your skills and vision. Our platform connects you with the right partner to turn your startup idea into a reality. Collaborate, innovate, and build something great together with the right team by your side.
-        </p>
+      <main className="flex flex-col items-center justify-center space-y-8 text-center hero-section w-full h-full">
+        <header className="px-12 md:py-64 test-center flex flex-col gap-8 justify-center items-center">
+          {/* Copy (text content) */}
+          <div className="flex flex-col gap-4 items-center justify-center">
+            <h2 className="text-7xl font-bold">The Fastest Way to Find a <span className="py-1 px-6 rounded-xl bg-blue-500 text-white">Startup Partner</span></h2>
+            <p className="text-lg md:max-w-6xl text-gray-500 font-regular">
+              Find co-founders who complement your skills and vision. Our platform connects you with the right partner to turn your startup idea into a reality. Collaborate, innovate, and build something great together with the right team by your side.
+            </p>
+          </div>
 
-        {/* Join Waitlist Form */}
-        <div>
-          <form onSubmit={handleSubmit} className="flex gap-4 items-center">
-            <Input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full px-4 md:min-w-[300px] py-6 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-              placeholder="Your Email Address"
-            />
-            <Button
-              type="submit"
-              className="px-6 py-6 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 font-semibold"
-              disabled={loading}
-            >
-              {loading ? "Joining..." : "Join Waitlist"}
-            </Button>
-          </form>
+          {/* Join Waitlist Form */}
+          <div>
+            <form onSubmit={handleSubmit} className="flex gap-4 items-center">
+              <Input
+                type="email"
+                id="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full px-4 md:min-w-[300px] py-6 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                placeholder="Your Email Address"
+              />
+              <Button
+                type="submit"
+                className="px-6 py-6 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 font-semibold"
+                disabled={loading}
+              >
+                {loading ? "Joining..." : "Join Waitlist"}
+              </Button>
+            </form>
 
-          {/* Conditional Message with Animation */}
-          {message.content.length > 0 && (
-            <motion.div
-              className={`mt-4 p-4 rounded-lg ${message.type === 'success' ? messageStyles.success : messageStyles.error}`}
-              variants={messageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              transition={{ duration: 0.5 }}
-            >
-              <p>{message.content}</p>
-            </motion.div>
-          )}
-        </div>
+            {/* Conditional Message with Animation */}
+            {message.content.length > 0 && (
+              <motion.div
+                className={`mt-4 p-4 rounded-lg ${message.type === 'success' ? messageStyles.success : messageStyles.error}`}
+                variants={messageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.5 }}
+              >
+                <p>{message.content}</p>
+              </motion.div>
+            )}
+          </div>
+        </header>
       </main>
 
       <footer className="w-full p-6 bg-gray-800 text-white text-center">
