@@ -91,7 +91,7 @@ export default function Hero() {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-70 shadow-md hover:shadow-lg"
+            className="w-full sm:w-auto px-8 py-3 flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-medium transition-all duration-200 justify-center disabled:opacity-70 shadow-md hover:shadow-lg"
           >
             {loading ? (
               "Joining..."
