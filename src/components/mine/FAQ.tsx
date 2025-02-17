@@ -35,7 +35,7 @@ export default function FAQ() {
 
   return (
     <motion.section
-      className="py-20 feature-background"
+      className="py-20 bg-white"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
@@ -43,7 +43,7 @@ export default function FAQ() {
     >
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-4xl font-bold text-white text-center mb-12">
+          <h2 className="text-4xl font-bold text-gray-900 text-center mb-12">
             Frequently Asked Questions
           </h2>
 
@@ -57,15 +57,15 @@ export default function FAQ() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <button
-                  className="w-full p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-lg border border-gray-700 transition-all duration-200"
+                  className="w-full p-6 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 transition-all duration-200"
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}
                 >
                   <div className="flex justify-between items-center w-full">
-                    <h3 className="text-lg font-medium text-white text-left">
+                    <h3 className="text-lg font-medium text-gray-900 text-left">
                       {faq.question}
                     </h3>
                     <ChevronDown
-                      className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${
+                      className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
                         openIndex === index ? "transform rotate-180" : ""
                       }`}
                     />
@@ -76,7 +76,7 @@ export default function FAQ() {
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.2 }}
-                      className="mt-4 text-gray-300 text-left"
+                      className="mt-4 text-gray-600 text-left"
                     >
                       {faq.answer}
                     </motion.p>
@@ -87,11 +87,11 @@ export default function FAQ() {
           </div>
 
           <div className="mt-12 text-center">
-            <p className="text-gray-300">
+            <p className="text-gray-600">
               Still have questions?{" "}
               <a
                 href="mailto:support@saasfoundr.com"
-                className="text-blue-400 hover:text-blue-300 transition-colors"
+                className="text-blue-600 hover:text-blue-700 transition-colors font-medium"
               >
                 Contact us
               </a>
