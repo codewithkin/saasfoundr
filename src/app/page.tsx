@@ -2,6 +2,7 @@ import Feature from "@/components/mine/Feature";
 import Footer from "@/components/mine/Footer";
 import Hero from "@/components/mine/Hero";
 import Navbar from "@/components/mine/navbars/Main";
+import Pricing from "@/components/mine/Pricing";
 
 export default function Home() {
   return (
@@ -9,6 +10,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Feature />
+      <Pricing />
       <Footer />
     </div>
   );
