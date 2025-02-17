@@ -58,7 +58,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between min-h-screen bg-gray-100">
+    <div className="flex flex-col bg-gray-100">
       <header className="flex justify-between items-center w-full p-6 bg-gray-800 text-white">
         <h1 className="text-3xl font-bold">SaaSFoundr</h1>
         <nav className="space-x-6">
@@ -86,9 +86,9 @@ export default function Home() {
         </Link>
       </header>
 
-      <main className="flex flex-col items-center justify-center p-12 space-y-8 text-center hero-section w-full h-full">
+      <main className="flex flex-col items-center justify-center px-12 md:py-64 space-y-8 text-center hero-section w-full h-full">
         <h2 className="text-7xl font-bold">The Fastest Way to Find a <span className="py-2 px-6 rounded-xl bg-blue-500 text-white">Startup Partner</span></h2>
-        <p className="text-lg md:max-w-6xl">
+        <p className="text-lg md:max-w-6xl text-gray-500">
           Find co-founders who complement your skills and vision. Our platform connects you with the right partner to turn your startup idea into a reality. Collaborate, innovate, and build something great together with the right team by your side.
         </p>
 
