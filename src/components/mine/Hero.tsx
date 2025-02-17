@@ -100,7 +100,7 @@ export default function Hero() {
             initial="initial"
             animate="animate"
           >
-            The Fastest Way to Find the right 
+            The Fastest Way to Find the right
             <span className="py-1 px-6 rounded-xl bg-blue-500 text-white block w-fit">
               Startup Partner
             </span>
@@ -120,10 +120,17 @@ export default function Hero() {
         </div>
 
         <TooltipProvider>
-          {images.map(({ id, url, name, position }) => (
-            <div
+          {images.map(({ id, url, name, position }, index) => (
+            <motion.div
               key={id}
               className={`absolute ${position} z-10 transform ${id === 1 || id === 2 ? "translate-x-1/2" : "translate-x-[-50%]"}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                opacity: { duration: 0.5 },
+                y: { duration: 0.5 },
+                delay: index * 1, // Delay incrementally by 1s for each image
+              }}
             >
               <Tooltip>
                 <TooltipTrigger>
@@ -135,7 +142,7 @@ export default function Hero() {
                 </TooltipTrigger>
                 <TooltipContent>{name}</TooltipContent>
               </Tooltip>
-            </div>
+            </motion.div>
           ))}
         </TooltipProvider>
 
