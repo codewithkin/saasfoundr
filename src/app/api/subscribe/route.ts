@@ -80,7 +80,6 @@ const WaitlistEmail = ({ email }: { email: string }) => `
     <div class="benefits">
       <strong>Here's what you can look forward to:</strong>
       <div class="benefit-item">✨ Early access to the platform</div>
-      <div class="benefit-item">💎 3 months free on any plan</div>
       <div class="benefit-item">🤝 Join our private community</div>
       <div class="benefit-item">⭐️ Priority support during launch</div>
     </div>
