@@ -55,9 +55,9 @@ export default function Home() {
       </header>
 
       <main className="flex flex-col items-center justify-center p-12 space-y-8 text-center">
-        <h2 className="text-7xl font-bold">Find Your Perfect Co-Founder Fast</h2>
-        <p className="text-lg">
-          Join a community of ambitious entrepreneurs and find the ideal co-founder to bring your startup vision to life.
+        <h2 className="text-7xl font-bold">The Fastest Way to Find a Startup Partner</h2>
+        <p className="text-lg md:max-w-4xl">
+          Find co-founders who complement your skills and vision. Our platform connects you with the right partner to turn your startup idea into a reality. Collaborate, innovate, and build something great together with the right team by your side
         </p>
 
         {/* Join Waitlist Form */}
