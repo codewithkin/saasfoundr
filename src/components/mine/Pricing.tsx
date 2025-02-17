@@ -151,7 +151,7 @@ export default function Pricing() {
                     : "bg-gray-100 text-gray-800 hover:bg-gray-200 hover:shadow-md"
                 }`}
               >
-                Get Started
+                Save my seat
               </button>
             </div>
           ))}
