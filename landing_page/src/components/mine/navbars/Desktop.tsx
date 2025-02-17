@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 
 interface DesktopNavbarProps {
   onWaitlistClick: () => void;
@@ -8,7 +9,16 @@ interface DesktopNavbarProps {
 const DesktopNavbar = ({ onWaitlistClick }: DesktopNavbarProps) => {
   return (
     <div className="hidden sm:flex w-full justify-between items-center">
-      <h1 className="text-3xl font-bold">SaaSFoundr</h1>
+      <Link href="/" className="flex items-center gap-2">
+        <Image
+          src="/brand/logo.svg"
+          alt="SaaSFoundr Logo"
+          width={40}
+          height={40}
+          className="w-10 h-10"
+        />
+        <span className="text-2xl font-bold">SaaSFoundr</span>
+      </Link>
 
       {/* Desktop Navigation Links */}
       <nav className="flex space-x-6">

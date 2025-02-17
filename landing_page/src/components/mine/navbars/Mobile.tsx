@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 interface MobileNavbarProps {
@@ -28,7 +29,16 @@ const MobileNavbar = ({
     <nav className="flex flex-col md:hidden w-full">
       {/* Mobile Menu Button */}
       <article className="flex w-full justify-between items-center">
-        <h1 className="text-3xl font-bold">SaaSFoundr</h1>
+        <Link href="/" className="flex items-center gap-2">
+          <Image
+            src="/brand/logo.svg"
+            alt="SaaSFoundr Logo"
+            width={32}
+            height={32}
+            className="w-8 h-8"
+          />
+          <span className="text-xl font-bold">SaaSFoundr</span>
+        </Link>
 
         <button
           className="sm:hidden text-white"
