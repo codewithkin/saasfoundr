@@ -95,13 +95,13 @@ export default function Hero() {
       <header className="w-full text-center py-40 md:py-64 flex flex-col justify-center items-center gap-8">
         <div className="flex flex-col items-center justify-center gap-4 z-20">
           <motion.h2
-            className="text-4xl leading-10 md:leading-normal md:text-7xl font-medium md:font-semibold"
+            className="text-4xl leading-10 md:leading-normal md:text-7xl font-medium md:font-semibold flex flex-col justify-center items-center"
             variants={headerVariants}
             initial="initial"
             animate="animate"
           >
-            The Fastest Way to Find a{" "}
-            <span className="py-1 px-6 rounded-xl bg-blue-500 text-white block md:inline">
+            The Fastest Way to Find the right 
+            <span className="py-1 px-6 rounded-xl bg-blue-500 text-white block w-fit">
               Startup Partner
             </span>
           </motion.h2>
