@@ -1,7 +1,11 @@
 "use client";
 import Link from "next/link";
 
-const DesktopNavbar = () => {
+interface DesktopNavbarProps {
+  onWaitlistClick: () => void;
+}
+
+const DesktopNavbar = ({ onWaitlistClick }: DesktopNavbarProps) => {
   return (
     <div className="hidden sm:flex w-full justify-between items-center">
       <h1 className="text-3xl font-bold">SaaSFoundr</h1>
@@ -26,12 +30,12 @@ const DesktopNavbar = () => {
       </nav>
 
       {/* Desktop Join Waitlist Button */}
-      <Link
-        href="/waitlist"
-        className="py-2 px-6 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700"
+      <button
+        onClick={onWaitlistClick}
+        className="py-2 px-6 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
       >
         Join Waitlist
-      </Link>
+      </button>
     </div>
   );
 };

@@ -2,17 +2,26 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 
+interface MobileNavbarProps {
+  isMenuOpen: boolean;
+  setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onWaitlistClick: () => void;
+}
+
 const MobileNavbar = ({
   isMenuOpen,
   setIsMenuOpen,
-}: {
-  isMenuOpen: boolean;
-  setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+  onWaitlistClick,
+}: MobileNavbarProps) => {
   const mobileMenuVariants = {
     initial: { opacity: 0, height: 0, overflow: "hidden" },
     animate: { opacity: 1, height: "auto", transition: { duration: 0.3 } },
     exit: { opacity: 0, height: 0, transition: { duration: 0.3 } },
+  };
+
+  const handleWaitlistClick = () => {
+    setIsMenuOpen(false);
+    onWaitlistClick();
   };
 
   return (
@@ -49,31 +58,52 @@ const MobileNavbar = ({
           variants={mobileMenuVariants}
           initial="initial"
           animate="animate"
-          exit="exit"
         >
-          <Link href="/" className="block py-2 hover:bg-gray-700">
-            Home
-          </Link>
-          <Link href="/about" className="block py-2 hover:bg-gray-700">
-            About
-          </Link>
-          <Link href="/features" className="block py-2 hover:bg-gray-700">
-            Features
-          </Link>
-          <Link href="/blog" className="block py-2 hover:bg-gray-700">
-            Blog
-          </Link>
-          <Link href="/contact" className="block py-2 hover:bg-gray-700">
-            Contact
-          </Link>
+          <div className="flex flex-col space-y-4">
+            <Link
+              href="/"
+              className="hover:text-blue-400"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Home
+            </Link>
+            <Link
+              href="/about"
+              className="hover:text-blue-400"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              About
+            </Link>
+            <Link
+              href="/features"
+              className="hover:text-blue-400"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Features
+            </Link>
+            <Link
+              href="/blog"
+              className="hover:text-blue-400"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Blog
+            </Link>
+            <Link
+              href="/contact"
+              className="hover:text-blue-400"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Contact
+            </Link>
 
-          {/* Mobile Join Waitlist Button */}
-          <Link
-            href="/waitlist"
-            className="block py-2 mt-4 text-center bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700"
-          >
-            Join Waitlist
-          </Link>
+            {/* Mobile Join Waitlist Button */}
+            <button
+              onClick={handleWaitlistClick}
+              className="w-full py-2 px-6 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              Join Waitlist
+            </button>
+          </div>
         </motion.div>
       )}
     </nav>
