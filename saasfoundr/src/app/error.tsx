@@ -11,39 +11,53 @@ export default function Error({
   reset: () => void
 }) {
   useEffect(() => {
-    // Optionally log the error to an error reporting service
     console.error(error)
   }, [error])
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
-      <div className="space-y-4 text-center">
-        <h1 className="text-4xl font-bold tracking-tighter text-red-600 sm:text-5xl">
-          Oops! Something went wrong
-        </h1>
-        <p className="mx-auto max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-          Don't worry, it's not you - it's us. Our team has been notified and we're working on it.
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -inset-[10px] opacity-50">
+          <div className="absolute top-0 left-1/2 w-[40rem] h-[40rem] bg-red-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
+          <div className="absolute top-0 right-1/2 w-[40rem] h-[40rem] bg-orange-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
+          <div className="absolute bottom-0 left-1/2 w-[40rem] h-[40rem] bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
+        </div>
+      </div>
+
+      <div className="space-y-6 text-center relative z-10">
+        <div className="space-y-2">
+          <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-orange-400 to-yellow-400 sm:text-5xl">
+            System Malfunction
+          </h1>
+          <div className="h-1 w-40 mx-auto bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 rounded-full" />
+        </div>
+        <p className="mx-auto max-w-[42rem] text-gray-400 sm:text-lg">
+          Our quantum processors encountered an unexpected glitch. 
+          The maintenance droids have been dispatched to investigate.
         </p>
-        <div className="mx-auto max-w-xs space-y-2">
+        <div className="mx-auto max-w-xs space-y-3">
           <Button 
             onClick={reset}
-            className="w-full"
+            className="w-full bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 hover:from-red-600 hover:via-orange-600 hover:to-yellow-600 text-white border-0"
           >
-            Try Again
+            Recalibrate Systems
           </Button>
           <Button
             onClick={() => window.location.href = '/'}
             variant="outline"
-            className="w-full"
+            className="w-full border-gray-700 text-gray-300 hover:text-white hover:bg-gray-800 hover:border-gray-600"
           >
-            Return Home
+            Return to Base
           </Button>
         </div>
         {process.env.NODE_ENV === 'development' && (
-          <div className="mt-4 text-left p-4 bg-gray-100 rounded-lg">
-            <p className="text-sm font-mono text-gray-700">
-              {error.message}
-            </p>
+          <div className="mt-4 mx-auto max-w-lg">
+            <div className="text-left p-4 bg-gray-800/50 rounded-lg border border-gray-700">
+              <p className="text-sm font-mono text-orange-400">
+                {error.message}
+              </p>
+            </div>
           </div>
         )}
       </div>
