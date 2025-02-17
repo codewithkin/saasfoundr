@@ -11,6 +11,8 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ content: string, type: string }>({ content: "", type: "" });  // To show success/error message
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile menu toggle
+
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,10 +39,6 @@ export default function Home() {
       setMessage({ content: "Error processing subscription.", type: "error" });
     } finally {
       setLoading(false);
-
-      setTimeout(() => {
-        setMessage({ content: "", type: "" });
-      }, 5000); // Clears the message after 5 seconds
     }
   };
 
@@ -57,48 +55,102 @@ export default function Home() {
     exit: { opacity: 0, y: 10 },
   };
 
+  // Header fade-in animation variants
+  const headerVariants = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1, transition: { duration: 1.5 } },
+  };
+
   return (
     <div className="flex flex-col bg-gray-100">
+      {/* Navbar Section */}
       <div className="flex justify-between items-center w-full p-6 bg-gray-800 text-white">
-        <h1 className="text-3xl font-bold">SaaSFoundr</h1>
-        <nav className="space-x-6">
-          <Link href="/" className="hover:underline">
-            Home
-          </Link>
-          <Link href="/about" className="hover:underline">
-            About
-          </Link>
-          <Link href="/features" className="hover:underline">
-            Features
-          </Link>
-          <Link href="/blog" className="hover:underline">
-            Blog
-          </Link>
-          <Link href="/contact" className="hover:underline">
-            Contact
-          </Link>
-        </nav>
-        <Link
-          href="/waitlist"
-          className="px-6 py-2 bg-white text-black font-semibold rounded-lg hover:bg-gray-200"
+        <motion.div
+          className="flex justify-between items-center w-full"
         >
-          Join Waitlist
-        </Link>
+          <h1 className="text-3xl font-bold">SaaSFoundr</h1>
+          
+          {/* Mobile Menu Button */}
+          <button
+            className="sm:hidden text-white"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+
+          {/* Desktop Navbar */}
+          <nav className="hidden sm:flex space-x-6">
+            <Link href="/" className="hover:underline">Home</Link>
+            <Link href="/about" className="hover:underline">About</Link>
+            <Link href="/features" className="hover:underline">Features</Link>
+            <Link href="/blog" className="hover:underline">Blog</Link>
+            <Link href="/contact" className="hover:underline">Contact</Link>
+          </nav>
+        </motion.div>
       </div>
 
-      <main className="flex flex-col items-center justify-center space-y-8 text-center hero-section w-full h-full">
-        <header className="px-12 md:py-64 test-center flex flex-col gap-8 justify-center items-center">
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <nav className="sm:hidden bg-gray-800 text-white w-full p-4">
+          <Link href="/" className="block py-2 hover:bg-gray-700">Home</Link>
+          <Link href="/about" className="block py-2 hover:bg-gray-700">About</Link>
+          <Link href="/features" className="block py-2 hover:bg-gray-700">Features</Link>
+          <Link href="/blog" className="block py-2 hover:bg-gray-700">Blog</Link>
+          <Link href="/contact" className="block py-2 hover:bg-gray-700">Contact</Link>
+
+          {/* Move Join Waitlist link here, so it only shows in mobile navbar */}
+          <Link
+            href="/waitlist"
+            className="block py-2 mt-4 text-center bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700"
+          >
+            Join Waitlist
+          </Link>
+        </nav>
+      )}
+
+      {/* Main Section */}
+      <main className="flex flex-col items-center justify-center px-12 space-y-8 text-center hero-section w-full h-full">
+        
+        {/* Header Section with Heading, Subheading, and CTA */}
+        <header className="w-full text-center md:py-64 flex flex-col justify-center items-center gap-8">
           {/* Copy (text content) */}
           <div className="flex flex-col gap-4 items-center justify-center">
-            <h2 className="text-7xl font-bold">The Fastest Way to Find a <span className="py-1 px-6 rounded-xl bg-blue-500 text-white">Startup Partner</span></h2>
-            <p className="text-lg md:max-w-6xl text-gray-500 font-regular">
-              Find co-founders who complement your skills and vision. Our platform connects you with the right partner to turn your startup idea into a reality. Collaborate, innovate, and build something great together with the right team by your side.
-            </p>
+            <motion.h2
+              className="text-7xl font-bold"
+              variants={headerVariants}
+              initial="initial"
+              animate="animate"
+            >
+              The Fastest Way to Find a <span className="py-1 px-6 rounded-xl bg-blue-500 text-white">Startup Partner</span>
+            </motion.h2>
           </div>
+
+          <motion.p
+            className="text-lg md:max-w-6xl text-gray-500"
+            variants={headerVariants}
+            initial="initial"
+            animate="animate"
+            transition={{ duration: 1.5, delay: 0.5 }}
+          >
+            Find co-founders who complement your skills and vision. Our platform connects you with the right partner to turn your startup idea into a reality. Collaborate, innovate, and build something great together with the right team by your side.
+          </motion.p>
 
           {/* Join Waitlist Form */}
           <div>
-            <form onSubmit={handleSubmit} className="flex gap-4 items-center">
+            <form onSubmit={handleSubmit} className="flex gap-4 items-center justify-center">
               <Input
                 type="email"
                 id="email"
