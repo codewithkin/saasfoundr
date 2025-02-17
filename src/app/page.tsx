@@ -1,90 +1,91 @@
-"use client";
+"use client"; // Ensure this is a client-side rendered component
+
 import { useState } from "react";
+import Link from "next/link"; // Import Link component for internal navigation
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { sendEmail } from "@/lib/resend";
 
 export default function Home() {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    setLoading(true);
 
-    const response = await sendEmail(email);
-    setMessage(response ? "You're on the waitlist!" : "Something went wrong.");
+    try {
+      // Replace this with your actual form submission logic (e.g., API call)
+      console.log("Email submitted:", email);
+      setEmail(""); // Clear the email input
+    } catch (error) {
+      console.error("Error submitting email:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-white">
-      {/* Hero Section */}
-      <header className="flex flex-col items-center justify-center px-6 py-16 text-center">
-        <h1 className="text-4xl sm:text-5xl font-semibold text-gray-800 mb-4">
-          Find Your Perfect Co-Founder, Fast.
-        </h1>
-        <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mb-8">
-          Join a community of ambitious entrepreneurs and discover the ideal co-founder to bring your startup vision to life.
-        </p>
-
-        {/* Hero Image or Illustration */}
-        <div className="w-full max-w-3xl flex justify-center mb-8">
-          <img
-            src="https://via.placeholder.com/600x400.png?text=Co-Founder+Match"
-            alt="People collaborating on a startup"
-            className="rounded-lg shadow-xl"
-          />
-        </div>
-
-        {/* Waitlist Form */}
-        <form onSubmit={handleSubmit} className="flex justify-center items-center space-x-4 w-full sm:w-auto">
-          <Input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full sm:w-80"
-          />
-          <Button type="submit" className="bg-blue-600 text-white hover:bg-blue-700">
-            Join Waitlist
-          </Button>
-        </form>
-
-        {message && <p className="mt-3 text-green-600">{message}</p>}
+    <div className="flex flex-col items-center justify-between min-h-screen bg-gray-100">
+      <header className="flex justify-between items-center w-full p-6 bg-blue-600 text-white">
+        <h1 className="text-3xl font-bold">SaaSFoundr</h1>
+        <nav className="space-x-6">
+          <Link href="/" className="hover:underline">
+            Home
+          </Link>
+          <Link href="/about" className="hover:underline">
+            About
+          </Link>
+          <Link href="/features" className="hover:underline">
+            Features
+          </Link>
+          <Link href="/blog" className="hover:underline">
+            Blog
+          </Link>
+          <Link href="/contact" className="hover:underline">
+            Contact
+          </Link>
+        </nav>
+        <Link
+          href="/waitlist"
+          className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+        >
+          Join Waitlist
+        </Link>
       </header>
 
-      {/* Why SaaSFoundr Section */}
-      <section className="px-6 py-16 bg-gray-50 text-center">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-6">Why Choose SaaSFoundr?</h2>
-        <p className="text-lg text-gray-600 mb-4">
-          SaaSFoundr helps you connect with co-founders that share your vision and skills, so you can focus on building your dream startup.
+      <main className="flex flex-col items-center justify-center p-12 space-y-8 text-center">
+        <h2 className="text-7xl font-bold">Find Your Perfect Co-Founder Fast</h2>
+        <p className="text-lg">
+          Join a community of ambitious entrepreneurs and find the ideal co-founder to bring your startup vision to life.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div className="p-6 bg-white rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">Fast, Simple Matching</h3>
-            <p className="text-gray-600">
-              Quickly find a co-founder who complements your skills and goals, and start building your business faster.
-            </p>
-          </div>
-          <div className="p-6 bg-white rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">Community of Entrepreneurs</h3>
-            <p className="text-gray-600">
-              Join a thriving network of like-minded entrepreneurs who are serious about building successful startups.
-            </p>
-          </div>
-          <div className="p-6 bg-white rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">Easy Collaboration</h3>
-            <p className="text-gray-600">
-              Seamlessly connect, communicate, and collaborate with potential co-founders to bring your ideas to life.
-            </p>
-          </div>
+        {/* Join Waitlist Form */}
+        <div>
+          <form onSubmit={handleSubmit} className="flex gap-4">
+            <Input
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              placeholder="Your Email Address"
+            />
+            <Button
+              type="submit"
+              className="px-6 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
+              disabled={loading}
+            >
+              {loading ? "Joining..." : "Join Waitlist"}
+            </Button>
+          </form>
         </div>
-      </section>
+      </main>
 
-      {/* Footer */}
-      <footer className="px-6 py-4 text-center bg-gray-800 text-white">
-        <p>&copy; 2025 SaaSFoundr. All rights reserved.</p>
+      <footer className="w-full p-6 bg-gray-800 text-white text-center">
+        <p>&copy; 2025 SaaSFoundr. All Rights Reserved.</p>
       </footer>
     </div>
   );
