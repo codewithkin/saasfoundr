@@ -1,36 +1,100 @@
-"use client";
+"use client"
+
 import { signIn } from "@/lib/auth"
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Icons } from "@/components/ui/icons"
 
 export default function SignIn() {
+  const [email, setEmail] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleEmailSignIn = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+    try {
+      await signIn("resend", { email, callbackUrl: "/home" })
+    } catch (error) {
+      console.error("Sign in error:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
+    <div className="container relative h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-1 lg:px-0">
+      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+        <div className="flex flex-col space-y-2 text-center">
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Welcome back
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            Enter your email to sign in to your account
+          </p>
         </div>
-        <div className="mt-8 space-y-6">
-          <div className="rounded-md shadow-sm space-y-4">
-            <button
-              onClick={() => signIn("github")}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-            >
-              Sign in with GitHub
-            </button>
-            <button
-              onClick={() => signIn("google")}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Sign in with Google
-            </button>
-            <button
-              onClick={() => signIn("email")}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-            >
-              Sign in with Email
-            </button>
+
+        {/* Email Sign In Form */}
+        <form onSubmit={handleEmailSignIn}>
+          <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Input
+                id="email"
+                placeholder="name@example.com"
+                type="email"
+                autoCapitalize="none"
+                autoComplete="email"
+                autoCorrect="off"
+                disabled={isLoading}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Button disabled={isLoading}>
+                {isLoading && (
+                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                )}
+                Sign In with Email
+              </Button>
+            </div>
           </div>
+        </form>
+
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">
+              Or continue with
+            </span>
+          </div>
+        </div>
+
+        <div className="grid gap-2">
+          <Button
+            variant="outline"
+            disabled={isLoading}
+            onClick={() => signIn("github", { callbackUrl: "/home" })}
+          >
+            {isLoading ? (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Icons.gitHub className="mr-2 h-4 w-4" />
+            )}
+            GitHub
+          </Button>
+          <Button
+            variant="outline"
+            disabled={isLoading}
+            onClick={() => signIn("google", { callbackUrl: "/home" })}
+          >
+            {isLoading ? (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Icons.google className="mr-2 h-4 w-4" />
+            )}
+            Google
+          </Button>
         </div>
       </div>
     </div>
