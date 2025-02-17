@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
 
 const WaitlistEmail = ({ email }: { email: string }) => `
 <!DOCTYPE html>
@@ -93,8 +93,7 @@ const WaitlistEmail = ({ email }: { email: string }) => `
     
     <div class="social">
       Let's connect:<br>
-      <a href="https://twitter.com/saasfoundr">Twitter</a> • 
-      <a href="https://linkedin.com/company/saasfoundr">LinkedIn</a>
+      <a href="https://twitter.com/codewithkin">Twitter</a> • 
     </div>
     
     <div class="footer">
@@ -119,9 +118,9 @@ export async function POST(req: Request) {
 
     // Send welcome email using Resend
     await resend.emails.send({
-      from: 'SaaSFoundr <hello@saasfoundr.com>',
+      from: 'SaaSFoundr <hello@aiseogen.com>',
       to: email,
-      subject: '🎉 Welcome to SaaSFoundr Waitlist!',
+      subject: '🎉 Welcome to the SaaSFoundr Waitlist!',
       html: WaitlistEmail({ email }),
     });
 
