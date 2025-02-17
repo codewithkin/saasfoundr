@@ -4,6 +4,7 @@ import Hero from "@/components/mine/Hero";
 import Navbar from "@/components/mine/navbars/Main";
 import Pricing from "@/components/mine/Pricing";
 import WaitList from "@/components/mine/WaitList";
+import FAQ from "@/components/mine/FAQ";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       <Feature />
       <Pricing />
       <WaitList />
+      <FAQ />
       <Footer />
     </div>
   );
