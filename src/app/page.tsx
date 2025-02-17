@@ -61,6 +61,13 @@ export default function Home() {
     animate: { opacity: 1, transition: { duration: 1.5 } },
   };
 
+  // Mobile Menu Animation Variants
+const mobileMenuVariants = {
+  initial: { opacity: 0, height: 0, overflow: "hidden" },
+  animate: { opacity: 1, height: "auto", transition: { duration: 0.3 } },
+  exit: { opacity: 0, height: 0, transition: { duration: 0.3 } }, // Exit animation
+};
+
   return (
     <div className="flex flex-col bg-gray-100">
       {/* Navbar Section */}
@@ -102,24 +109,30 @@ export default function Home() {
         </motion.div>
       </div>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <nav className="sm:hidden bg-gray-800 text-white w-full p-4">
-          <Link href="/" className="block py-2 hover:bg-gray-700">Home</Link>
-          <Link href="/about" className="block py-2 hover:bg-gray-700">About</Link>
-          <Link href="/features" className="block py-2 hover:bg-gray-700">Features</Link>
-          <Link href="/blog" className="block py-2 hover:bg-gray-700">Blog</Link>
-          <Link href="/contact" className="block py-2 hover:bg-gray-700">Contact</Link>
+      {/* Mobile Menu with Animation */}
+{isMenuOpen && (
+  <motion.div
+    className="sm:hidden bg-gray-800 text-white w-full p-4"
+    variants={mobileMenuVariants}
+    initial="initial"
+    animate="animate"
+    exit="exit"
+  >
+    <Link href="/" className="block py-2 hover:bg-gray-700">Home</Link>
+    <Link href="/about" className="block py-2 hover:bg-gray-700">About</Link>
+    <Link href="/features" className="block py-2 hover:bg-gray-700">Features</Link>
+    <Link href="/blog" className="block py-2 hover:bg-gray-700">Blog</Link>
+    <Link href="/contact" className="block py-2 hover:bg-gray-700">Contact</Link>
 
-          {/* Move Join Waitlist link here, so it only shows in mobile navbar */}
-          <Link
-            href="/waitlist"
-            className="block py-2 mt-4 text-center bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700"
-          >
-            Join Waitlist
-          </Link>
-        </nav>
-      )}
+    {/* Move Join Waitlist link here, so it only shows in mobile navbar */}
+    <Link
+      href="/waitlist"
+      className="block py-2 mt-4 text-center bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700"
+    >
+      Join Waitlist
+    </Link>
+  </motion.div>
+)}
 
       {/* Main Section */}
       <main className="flex flex-col items-center justify-center px-12 space-y-8 text-center hero-section w-full h-full">
