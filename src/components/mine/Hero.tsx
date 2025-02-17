@@ -87,9 +87,6 @@ export default function Hero() {
     },
   ];
 
-  // Randomly shuffle the array of images to place them in random spots
-  const randomImageIndexes = images.sort(() => Math.random() - 0.5);
-
   return (
     <section className="flex flex-col items-center justify-center px-4 md:px-12 space-y-8 text-center hero-section w-full h-full relative">
       <header className="w-full text-center py-40 md:py-64 flex flex-col justify-center items-center gap-8">
