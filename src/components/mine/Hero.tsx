@@ -66,11 +66,25 @@ export default function Hero() {
 
   // Dummy image URLs for community connection and names
   const images = [
-    { url: "/people/marc.png", name: "Marc Louvan" },
-    { url: "/people/Andre.png", name: "Andre Flores" },
-    { url: "/people/florin.png", name: "Florin Pop" },
-    { url: "/people/Robin.png", name: "Robin Faraj" },
-    { url: "/people/anthony.png", name: "Anthony Riera" },
+    {
+      id: 1,
+      url: "/people/florin.png",
+      name: "Florin",
+      position: "top-0 left-0",
+    },
+    { id: 2, url: "/people/marc.png", name: "Marc", position: "top-0 right-0" },
+    {
+      id: 3,
+      url: "/people/anthony.png",
+      name: "Anthony",
+      position: "bottom-0 left-0",
+    },
+    {
+      id: 4,
+      url: "/people/Andre.png",
+      name: "Andre",
+      position: "bottom-0 right-0",
+    },
   ];
 
   // Randomly shuffle the array of images to place them in random spots
@@ -79,7 +93,7 @@ export default function Hero() {
   return (
     <section className="flex flex-col items-center justify-center px-4 md:px-12 space-y-8 text-center hero-section w-full h-full relative">
       <header className="w-full text-center py-40 md:py-64 flex flex-col justify-center items-center gap-8">
-        <div className="flex flex-col items-center justify-center gap-4">
+        <div className="flex flex-col items-center justify-center gap-4 z-20">
           <motion.h2
             className="text-4xl leading-10 md:leading-normal md:text-7xl font-medium md:font-semibold"
             variants={headerVariants}
@@ -105,73 +119,29 @@ export default function Hero() {
           </motion.p>
         </div>
 
-        {/* Random image placements with tooltips */}
         <TooltipProvider>
-          <div className="absolute top-10 left-10">
-            <Tooltip>
-              <TooltipTrigger>
-                <img
-                  src={randomImageIndexes[0].url}
-                  alt="Community Image"
-                  className="rounded-full shadow-lg w-32 h-32 object-cover"
-                />
-              </TooltipTrigger>
-              <TooltipContent>{randomImageIndexes[0].name}</TooltipContent>
-            </Tooltip>
-          </div>
-          <div className="absolute top-20 right-20">
-            <Tooltip>
-              <TooltipTrigger>
-                <img
-                  src={randomImageIndexes[1].url}
-                  alt="Community Image"
-                  className="rounded-full shadow-lg w-32 h-32 object-cover"
-                />
-              </TooltipTrigger>
-              <TooltipContent>{randomImageIndexes[1].name}</TooltipContent>
-            </Tooltip>
-          </div>
-          <div className="absolute bottom-20 left-20">
-            <Tooltip>
-              <TooltipTrigger>
-                <img
-                  src={randomImageIndexes[2].url}
-                  alt="Community Image"
-                  className="rounded-full shadow-lg w-32 h-32 object-cover"
-                />
-              </TooltipTrigger>
-              <TooltipContent>{randomImageIndexes[2].name}</TooltipContent>
-            </Tooltip>
-          </div>
-          <div className="absolute bottom-10 right-10">
-            <Tooltip>
-              <TooltipTrigger>
-                <img
-                  src={randomImageIndexes[3].url}
-                  alt="Community Image"
-                  className="rounded-full shadow-lg w-32 h-32 object-cover"
-                />
-              </TooltipTrigger>
-              <TooltipContent>{randomImageIndexes[3].name}</TooltipContent>
-            </Tooltip>
-          </div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <Tooltip>
-              <TooltipTrigger>
-                <img
-                  src={randomImageIndexes[4].url}
-                  alt="Community Image"
-                  className="rounded-full shadow-lg w-32 h-32 object-cover"
-                />
-              </TooltipTrigger>
-              <TooltipContent>{randomImageIndexes[4].name}</TooltipContent>
-            </Tooltip>
-          </div>
+          {images.map(({ id, url, name, position }) => (
+            <div
+              key={id}
+              className={`absolute ${position} z-10 transform ${id === 1 || id === 2 ? "translate-x-1/2" : "translate-x-[-50%]"}`}
+            >
+              <Tooltip>
+                <TooltipTrigger>
+                  <img
+                    src={url}
+                    alt={name}
+                    className="rounded-full shadow-lg w-16 h-16 md:w-32 md:h-32 object-cover"
+                  />
+                </TooltipTrigger>
+                <TooltipContent>{name}</TooltipContent>
+              </Tooltip>
+            </div>
+          ))}
         </TooltipProvider>
 
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col md:flex-row gap-2 md:gap-4 items-center justify-center"
+          className="flex flex-col md:flex-row gap-2 md:gap-4 items-center justify-center w-full md:w-fit"
         >
           <Input
             type="email"
