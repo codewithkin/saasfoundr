@@ -11,17 +11,18 @@ const poppins = Poppins({
 // Define the SEO metadata
 export const metadata: Metadata = {
   title: "SaaSFoundr - Find Your Perfect Co-Founder Fast",
-  description: "Join a community of ambitious entrepreneurs and find the ideal co-founder to bring your startup vision to life.",
-  robots: "index, follow",  // Allow search engines to index and follow the links on the page.
+  description:
+    "Join a community of ambitious entrepreneurs and find the ideal co-founder to bring your startup vision to life.",
+  robots: "index, follow", // Allow search engines to index and follow the links on the page.
   openGraph: {
     title: "SaaSFoundr - Find Your Perfect Co-Founder Fast",
     description:
       "Join a community of ambitious entrepreneurs and find the ideal co-founder to bring your startup vision to life.",
-    url: "https://saasfoundr.com",  // Replace with the actual URL
+    url: "https://saasfoundr.com", // Replace with the actual URL
     siteName: "SaaSFoundr",
     images: [
       {
-        url: "/path/to/your/og-image.jpg",  // Replace with the path to your OG image
+        url: "/path/to/your/og-image.jpg", // Replace with the path to your OG image
         width: 1200,
         height: 630,
         alt: "SaaSFoundr Co-Founder Matching",
@@ -30,11 +31,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image", // You can use 'summary' or 'summary_large_image' depending on your needs
-    site: "@saasfoundr",  // Replace with your Twitter handle
+    site: "@saasfoundr", // Replace with your Twitter handle
     title: "SaaSFoundr - Find Your Perfect Co-Founder Fast",
     description:
       "Join a community of ambitious entrepreneurs and find the ideal co-founder to bring your startup vision to life.",
-    images: ["/path/to/your/twitter-image.jpg"],  // Replace with the Twitter image path
+    images: ["/path/to/your/twitter-image.jpg"], // Replace with the Twitter image path
   },
   // Add a favicon for your website
   icons: {
@@ -53,9 +54,7 @@ export default function RootLayout({
       <head>
         {/* Other SEO-related tags will be injected by Next.js automatically */}
       </head>
-      <body className={`${poppins.className} antialiased`}>
-        {children}
-      </body>
+      <body className={`${poppins.className} antialiased`}>{children}</body>
     </html>
   );
 }
