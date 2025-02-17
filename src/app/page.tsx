@@ -27,7 +27,7 @@ export default function Home() {
       const result = await response.json();
 
       if (response.ok) {
-        setMessage(result.message); // Success message
+        setMessage({ content: result.message, type: "success" }); // Success message
         setEmail(""); // Clear the input
       } else {
         setMessage(result.message); // Error message
@@ -36,6 +36,10 @@ export default function Home() {
       setMessage({content: "Error processing subscription.", type: "error"});
     } finally {
       setLoading(false);
+
+      setTimeout(() => {
+        setMessage({ content: "", type: "" });
+      }, 5000); // Clears the message after 5 seconds
     }
   };
 
