@@ -4,8 +4,12 @@ import Google from "@auth/core/providers/google"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { PrismaClient } from "@prisma/client"
 import Resend from "@auth/core/providers/resend"
+import { Resend as ResendClient } from 'resend'
+import SignInEmail from "@/components/emails/signin-email"
+import { render } from "@react-email/render"
 
 const prisma = new PrismaClient()
+const resend = new ResendClient(process.env.AUTH_RESEND_KEY)
 
 export const { 
   handlers: { GET, POST },
@@ -23,7 +27,25 @@ export const {
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
     }),
-    Resend,
+    Resend({
+      apiKey: process.env.AUTH_RESEND_KEY,
+      from: "auth@saasfoundr.com",
+      async sendVerificationRequest({ identifier: email, url }) {
+        try {
+          const html = render(SignInEmail({ url }))
+          
+          await resend.emails.send({
+            from: "SaaSFoundr <auth@saasfoundr.com>",
+            to: email,
+            subject: "Sign in to SaaSFoundr",
+            html,
+          })
+        } catch (error) {
+          console.error("Failed to send verification email", error)
+          throw new Error("Failed to send verification email")
+        }
+      },
+    }),
   ],
   session: {
     strategy: "jwt",
