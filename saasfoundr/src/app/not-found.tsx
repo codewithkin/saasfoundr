@@ -20,17 +20,16 @@ export default function NotFound() {
           </h1>
           <div className="h-1 w-40 mx-auto bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full" />
           <h2 className="text-3xl font-bold text-white mt-4">
-            Lost in Cyberspace
+            Lost in CyberSpace
           </h2>
         </div>
         <p className="mx-auto max-w-[42rem] text-gray-400 sm:text-lg">
-          The digital coordinates you're looking for seem to have drifted into another dimension.
-          Let's get you back to familiar territory.
+          Sorry, the page you were looking for couldn't be found
         </p>
         <div className="mx-auto max-w-xs space-y-3">
           <Button asChild className="w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white border-0">
             <Link href="/">
-              Return to Base
+              Take me home
             </Link>
           </Button>
           <Button
@@ -39,7 +38,7 @@ export default function NotFound() {
             className="w-full border-gray-700 text-gray-600 hover:text-white hover:bg-gray-800 hover:border-gray-600"
           >
             <Link href="/contact">
-              Contact Mission Control
+              Contact Support
             </Link>
           </Button>
         </div>
