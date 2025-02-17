@@ -37,10 +37,10 @@ export default function SignIn() {
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
           <h1 className="text-2xl md:text-4xl font-semibold tracking-tight">
-            Welcome back
+            Welcome back, founder!
           </h1>
           <p className="text-sm text-muted-foreground">
-            We're sooo happy to see you again ! Please choose a sign in method to continue
+            Ready to connect with fellow SaaS builders and potential co-founders?
           </p>
         </div>
 
@@ -62,12 +62,12 @@ export default function SignIn() {
               />
               <Button 
                 disabled={isLoading}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
               >
                 {isLoading && (
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 )}
-                Sign In with Email
+                Sign in with Email
               </Button>
             </div>
           </div>
@@ -89,28 +89,39 @@ export default function SignIn() {
             variant="outline"
             disabled={isLoading}
             onClick={() => handleProviderSignIn("github")}
-            className="bg-black text-white hover:bg-black/50 border-0"
+            className="bg-[#24292F] text-white hover:bg-[#24292F]/90 border-0"
           >
             {isLoading ? (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             ) : (
               <Icons.gitHub className="mr-2 h-4 w-4" />
             )}
-            GitHub
+            Continue with GitHub
           </Button>
           <Button
             variant="outline"
             disabled={isLoading}
             onClick={() => handleProviderSignIn("google")}
+            className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white border-0"
           >
             {isLoading ? (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             ) : (
               <Icons.google className="mr-2 h-4 w-4" />
             )}
-            Google
+            Continue with Google
           </Button>
         </div>
+
+        <p className="px-8 text-center text-sm text-muted-foreground">
+          New to SaaSFoundr?{" "}
+          <a
+            href="/auth/signup"
+            className="underline underline-offset-4 hover:text-primary"
+          >
+            Join the community
+          </a>
+        </p>
       </div>
     </div>
   )
