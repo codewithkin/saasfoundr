@@ -7,30 +7,26 @@ const features = [
     title: "User Profiles & Matching",
     description: "Create detailed profiles to find the perfect co-founder based on skills, expertise, and industry focus.",
     icon: User,  // Choose a relevant icon like User from lucide-react
-    image: "/images/user-profiles.png",  // You can update the image to reflect this feature
-    pattern: "/patterns/network.svg",
+    image: "/images/handshake.jpg",  // You can update the image to reflect this feature
     size: "lg",
   },
   {
     title: "Startup Listings",
     description: "Post your SaaS idea and find the right co-founder who complements your skills and vision.",
     icon: Briefcase,  // A relevant icon like Briefcase
-    pattern: "/patterns/idea.svg",
     size: "sm",
   },
   {
     title: "Messaging & Connections",
     description: "Connect with potential co-founders through direct messaging and send connection requests to prevent spam.",
     icon: MessageCircle,  // A messaging-related icon
-    pattern: "/patterns/connection.svg",
     size: "sm",
   },
   {
     title: "Advanced Filtering & Search",
     description: "Easily filter co-founder profiles by skills, availability, and other key criteria to find the right match.",
     icon: SearchCheck,  // An icon related to search
-    image: "/images/filtering.png",  // You can update the image for this feature
-    pattern: "/patterns/search.svg",
+    image: "/images/search.jpg",  // You can update the image for this feature
     size: "lg",
   },
 ];
@@ -63,13 +59,8 @@ const Feature = () => {
             {features.slice(0, 2).map((feature, index) => (
               <motion.div
                 key={index}
-                className={`relative p-8 rounded-xl shadow-lg overflow-hidden border border-gray-300 bg-white bg-opacity-80 neon-glow flex 
+                className={`relative p-2 rounded-xl shadow-lg overflow-hidden border border-gray-300 bg-white bg-opacity-80 neon-glow flex 
                   ${feature.size === "lg" ? "lg:w-3/4 flex-row" : "lg:w-1/4 flex-col"}`}
-                style={{
-                  backgroundImage: `url(${feature.pattern})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
@@ -111,13 +102,8 @@ const Feature = () => {
             {features.slice(2, 4).map((feature, index) => (
               <motion.div
                 key={index}
-                className={`relative p-8 rounded-xl shadow-lg overflow-hidden border border-gray-300 bg-white bg-opacity-80 neon-glow flex 
+                className={`relative p-2 rounded-xl shadow-lg overflow-hidden border border-gray-300 bg-white bg-opacity-80 neon-glow flex 
                   ${feature.size === "lg" ? "lg:w-3/4 flex-row" : "lg:w-1/4 flex-col"}`}
-                style={{
-                  backgroundImage: `url(${feature.pattern})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
