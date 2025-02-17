@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { sendEmail } from "@/lib/loopso";
+import { sendEmail } from "@/lib/resend";
 
 export default function Home() {
   const [email, setEmail] = useState("");
