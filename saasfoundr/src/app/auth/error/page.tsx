@@ -25,8 +25,8 @@ export default function AuthError({
       message: "The sign in link is no longer valid. It may have been used already or it may have expired.",
     },
     Default: {
-      title: "Authentication Error",
-      message: "An error occurred during authentication. Please try again.",
+      title: "OOPS !",
+      message: "We couldn't handle your request, please try again later",
     },
   }
 

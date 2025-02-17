@@ -1,11 +1,10 @@
 "use client"
 
-import { signIn } from "@/lib/auth"
+import { signIn } from "next-auth/react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Icons } from "@/components/ui/icons"
-import { cn } from "@/lib/utils"
 
 export default function SignIn() {
   const [email, setEmail] = useState("")
@@ -19,6 +18,16 @@ export default function SignIn() {
     } catch (error) {
       console.error("Sign in error:", error)
     } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleProviderSignIn = (provider: "github" | "google") => {
+    setIsLoading(true)
+    try {
+      signIn(provider, { callbackUrl: "/home" })
+    } catch (error) {
+      console.error(`${provider} sign in error:`, error)
       setIsLoading(false)
     }
   }
@@ -79,7 +88,7 @@ export default function SignIn() {
           <Button
             variant="outline"
             disabled={isLoading}
-            onClick={() => signIn("github", { callbackUrl: "/home" })}
+            onClick={() => handleProviderSignIn("github")}
             className="bg-black text-white hover:bg-black/50 border-0"
           >
             {isLoading ? (
@@ -92,7 +101,7 @@ export default function SignIn() {
           <Button
             variant="outline"
             disabled={isLoading}
-            onClick={() => signIn("google", { callbackUrl: "/home" })}
+            onClick={() => handleProviderSignIn("google")}
           >
             {isLoading ? (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
