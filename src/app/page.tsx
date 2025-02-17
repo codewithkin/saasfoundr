@@ -8,19 +8,32 @@ import { Input } from "@/components/ui/input";
 export default function Home() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<{content: string, type: string}>({content: "", type: ""});  // To show success/error message
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
+    
     try {
-      // Replace this with your actual form submission logic (e.g., API call)
-      console.log("Email submitted:", email);
-      
-      setEmail(""); // Clear the email input
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setMessage(result.message); // Success message
+        setEmail(""); // Clear the input
+      } else {
+        setMessage(result.message); // Error message
+      }
     } catch (error) {
-      console.error("Error submitting email:", error);
+      setMessage({content: "Error processing subscription.", type: "error"});
     } finally {
       setLoading(false);
     }
@@ -82,6 +95,12 @@ export default function Home() {
               {loading ? "Joining..." : "Join Waitlist"}
             </Button>
           </form>
+          {message.content.length > 0 && 
+            message.type === "success" ? (
+              <p className="mt-4 text-green-600">{message.content}</p>
+            ) :
+            <p className="mt-4 text-red-600">{message.content}</p>
+          }
         </div>
       </main>
 
