@@ -4,43 +4,16 @@ export const metadata: Metadata = {
   title: "Authentication Error",
 }
 
-export default function AuthError({
-  searchParams,
-}: {
-  searchParams: { error?: string }
-}) {
-  const error = searchParams?.error
-
-  const errors = {
-    Configuration: {
-      title: "Configuration Error",
-      message: "There is a problem with the server configuration. Check if all environment variables are properly set.",
-    },
-    AccessDenied: {
-      title: "Access Denied",
-      message: "You do not have permission to sign in. Please contact support if you think this is a mistake.",
-    },
-    Verification: {
-      title: "Unable to Verify",
-      message: "The sign in link is no longer valid. It may have been used already or it may have expired.",
-    },
-    Default: {
-      title: "OOPS !",
-      message: "We couldn't handle your request, please try again later",
-    },
-  }
-
-  const { title, message } = errors[error as keyof typeof errors] ?? errors.Default
-
+export default function AuthError() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-red-600">
-            {title}
+            Unable to Sign In
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            {message}
+            We couldn't handle your request, please try again later
           </p>
           <div className="mt-4 text-center">
             <a

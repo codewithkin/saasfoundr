@@ -8,7 +8,7 @@ import { Resend as ResendClient } from 'resend'
 import SignInEmail from "@/components/emails/signin-email"
 import { render } from "@react-email/render"
 
-const prisma = new PrismaClient()
+export const prisma = new PrismaClient()
 const resend = new ResendClient(process.env.AUTH_RESEND_KEY)
 
 export const { 
