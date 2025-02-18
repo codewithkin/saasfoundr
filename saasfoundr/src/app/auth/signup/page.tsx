@@ -56,8 +56,8 @@ export default function SignUp() {
                 autoComplete="email"
                 autoCorrect="off"
                 disabled={isLoading}
-                value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                value={email}
                 className="focus-visible:ring-blue-600"
               />
               <Button 
