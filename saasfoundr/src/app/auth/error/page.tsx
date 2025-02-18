@@ -1,4 +1,5 @@
 import { type Metadata } from "next"
+import Link from "next/link"
 
 export const metadata: Metadata = {
   title: "Authentication Error",
@@ -16,12 +17,12 @@ export default function AuthError() {
             We couldn't handle your request, please try again later
           </p>
           <div className="mt-4 text-center">
-            <a
+            <Link
               href="/auth/signin"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
+              className="font-medium text-white px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-800 hover:bg-indigo-800 transition duration-500"
             >
               Return to sign in
-            </a>
+            </Link>
           </div>
         </div>
       </div>
