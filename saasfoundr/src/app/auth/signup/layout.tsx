@@ -1,6 +1,6 @@
 export default function SignupLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div>
+    <div className="w-full">
       {children}
     </div>
   );
