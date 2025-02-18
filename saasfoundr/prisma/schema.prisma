@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -43,12 +40,17 @@ model Session {
 model User {
   id            String    @id @default(cuid())
   name          String?
+  username      String?   @unique
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  field         String?
   role          String?
-  looking_for   String?
+  field         String?
+  lookingFor    String?
+  bio           String?   @db.Text
+  experience    String?   @db.Text
+  interests     String?   @db.Text
+  goals         String?   @db.Text
   connections   User[]    @relation("UserConnections")
   followed_by   User[]    @relation("UserFollowedBy")
   accounts      Account[]

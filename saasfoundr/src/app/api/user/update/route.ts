@@ -18,6 +18,7 @@ export async function POST(request: Request) {
     });
     return NextResponse.json(updatedUser);
   } catch (error) {
+    console.log("An error occured while updating user: ", error);
     return NextResponse.json({ error: 'Failed to update user data' }, { status: 500 });
   }
 }

@@ -9,6 +9,7 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import { getSession } from 'next-auth/react';
+import { Icons } from './ui/icons';
 
 const Onboarding: React.FC = () => {
   const router = useRouter();
@@ -25,6 +26,7 @@ const Onboarding: React.FC = () => {
     interests: '',
     goals: ''
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -45,8 +47,20 @@ const Onboarding: React.FC = () => {
   };
 
   const nextStep = async () => {
-    await updateUserData();
-    setStep(step + 1);
+    setIsLoading(true);
+    try {
+      const response = await updateUserData();
+      if (response.ok) {
+        setStep(step + 1);
+      } else {
+        // You might want to add toast notification here
+        console.error('Failed to save data');
+      }
+    } catch (error) {
+      console.error('Error saving data:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const prevStep = () => {
@@ -62,18 +76,29 @@ const Onboarding: React.FC = () => {
         },
         body: JSON.stringify(formData),
       });
-      if (!response.ok) {
-        throw new Error('Failed to update user data');
-      }
+      return response;
     } catch (error) {
       console.error('Error updating user data:', error);
+      throw error;
     }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await updateUserData();
-    router.push('/home');
+    setIsLoading(true);
+    try {
+      const response = await updateUserData();
+      if (response.ok) {
+        router.push('/home');
+      } else {
+        // You might want to add toast notification here
+        console.error('Failed to save data');
+      }
+    } catch (error) {
+      console.error('Error saving data:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -243,16 +268,32 @@ const Onboarding: React.FC = () => {
                 <Button
                   type="button"
                   onClick={nextStep}
+                  disabled={isLoading}
                   className="h-11 px-6 rounded-lg bg-gradient-to-r from-blue-500 to-purple-700 hover:from-blue-600 hover:to-purple-800 text-white ml-auto"
                 >
-                  Continue
+                  {isLoading ? (
+                    <>
+                      <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    'Continue'
+                  )}
                 </Button>
               ) : (
                 <Button
                   type="submit"
+                  disabled={isLoading}
                   className="h-11 px-6 rounded-lg bg-gradient-to-r from-blue-500 to-purple-700 hover:from-blue-600 hover:to-purple-800 text-white ml-auto"
                 >
-                  Complete Setup
+                  {isLoading ? (
+                    <>
+                      <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                      Completing...
+                    </>
+                  ) : (
+                    'Complete Setup'
+                  )}
                 </Button>
               )}
             </div>
