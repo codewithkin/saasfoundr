@@ -7,6 +7,7 @@ import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
+import { Textarea } from './ui/textarea';
 import { getSession } from 'next-auth/react';
 
 const Onboarding: React.FC = () => {
@@ -19,23 +20,28 @@ const Onboarding: React.FC = () => {
     role: '',
     field: '',
     lookingFor: '',
-    connections: ''
+    bio: '',
+    experience: '',
+    interests: '',
+    goals: ''
   });
 
   useEffect(() => {
     const fetchUserData = async () => {
       const session = await getSession();
-      if (session && session.user) {
-        const userEmail = session.user.email;
-        setFormData(prev => ({ ...prev, email: userEmail }));
+      if (session?.user) {
+        setFormData(prev => ({
+          ...prev,
+          email: session?.user?.email || '',
+          name: session?.user?.name || ''
+        }));
       }
     };
     fetchUserData();
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const handleChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const nextStep = async () => {
@@ -48,15 +54,19 @@ const Onboarding: React.FC = () => {
   };
 
   const updateUserData = async () => {
-    const response = await fetch('/api/user/update', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
-    if (!response.ok) {
-      console.error('Failed to update user data');
+    try {
+      const response = await fetch('/api/user/update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update user data');
+      }
+    } catch (error) {
+      console.error('Error updating user data:', error);
     }
   };
 
@@ -67,73 +77,187 @@ const Onboarding: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen w-full bg-gradient-to-r from-blue-500 to-purple-500 p-4">
-      <Card className="w-full max-w-md p-6 rounded-lg shadow-lg bg-white">
-        <h2 className="text-2xl font-bold text-center mb-4">Onboarding Process</h2>
-        <Progress value={(step / 4) * 100} className="mb-4" />
-        <p className="text-center mb-4">Step {step} of 4</p>
-        <form onSubmit={handleSubmit}>
-          {step === 1 && (
-            <div className="mb-4">
-              <Label>Name:</Label>
-              <Input type="text" name="name" value={formData.name} onChange={handleChange} required className="mb-2" />
-              <Label>Username:</Label>
-              <Input type="text" name="username" value={formData.username} onChange={handleChange} required className="mb-2" />
-              <Label>Email:</Label>
-              <Input type="email" name="email" value={formData.email} onChange={handleChange} required className="mb-2" />
-            </div>
-          )}
-          {step === 2 && (
-            <div className="mb-4">
-              <Label>Role:</Label>
-              <Select>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select Role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Developer">Developer</SelectItem>
-                  <SelectItem value="Marketer">Marketer</SelectItem>
-                  <SelectItem value="Designer">Designer</SelectItem>
-                </SelectContent>
-              </Select>
-              <Label>Field:</Label>
-              <Input type="text" name="field" value={formData.field} onChange={handleChange} required className="mb-2" />
-            </div>
-          )}
-          {step === 3 && (
-            <div className="mb-4">
-              <Label>Looking For:</Label>
-              <Select>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select Role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Developer">Developer</SelectItem>
-                  <SelectItem value="Marketer">Marketer</SelectItem>
-                  <SelectItem value="Designer">Designer</SelectItem>
-                </SelectContent>
-              </Select>
-              <Label>Connections (optional):</Label>
-              <Input type="text" name="connections" value={formData.connections} onChange={handleChange} className="mb-2" />
-            </div>
-          )}
-          {step === 4 && (
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold">Review Your Information</h3>
-              <p>Name: {formData.name}</p>
-              <p>Username: {formData.username}</p>
-              <p>Email: {formData.email}</p>
-              <p>Role: {formData.role}</p>
-              <p>Field: {formData.field}</p>
-              <p>Looking For: {formData.lookingFor}</p>
-              <p>Connections: {formData.connections}</p>
-            </div>
-          )}
-          <div className="flex justify-between">
-            {step > 1 && <Button type="button" onClick={prevStep}>Previous</Button>}
-            {step < 4 ? <Button type="button" onClick={nextStep}>Next</Button> : <Button type="submit">Submit</Button>}
+    <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 to-purple-50 py-8 px-4">
+      <Card className="max-w-2xl mx-auto p-8 rounded-xl shadow-lg bg-white">
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold text-center bg-gradient-to-r from-blue-600 to-purple-700 bg-clip-text text-transparent">
+              {step === 1 ? "Let's Get Started" :
+               step === 2 ? "Your Professional Profile" :
+               step === 3 ? "Your Interests & Goals" :
+               "Final Steps"}
+            </h2>
+            <Progress value={(step / 4) * 100} className="h-2 bg-gray-100" />
+            <p className="text-center text-sm text-gray-500">Step {step} of 4</p>
           </div>
-        </form>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {step === 1 && (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Full Name</Label>
+                  <Input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => handleChange('name', e.target.value)}
+                    className="h-11 rounded-lg border-gray-200 focus-visible:ring-blue-500"
+                    placeholder="John Doe"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Username</Label>
+                  <Input
+                    type="text"
+                    value={formData.username}
+                    onChange={(e) => handleChange('username', e.target.value)}
+                    className="h-11 rounded-lg border-gray-200 focus-visible:ring-blue-500"
+                    placeholder="johndoe"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Email</Label>
+                  <Input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => handleChange('email', e.target.value)}
+                    className="h-11 rounded-lg border-gray-200 focus-visible:ring-blue-500"
+                    placeholder="john@example.com"
+                    required
+                    disabled
+                  />
+                </div>
+              </div>
+            )}
+
+            {step === 2 && (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Your Role</Label>
+                  <Select onValueChange={(value) => handleChange('role', value)}>
+                    <SelectTrigger className="h-11 rounded-lg border-gray-200">
+                      <SelectValue placeholder="Select your primary role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="founder">Founder</SelectItem>
+                      <SelectItem value="developer">Developer</SelectItem>
+                      <SelectItem value="designer">Designer</SelectItem>
+                      <SelectItem value="marketer">Marketer</SelectItem>
+                      <SelectItem value="product">Product Manager</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Industry/Field</Label>
+                  <Select onValueChange={(value) => handleChange('field', value)}>
+                    <SelectTrigger className="h-11 rounded-lg border-gray-200">
+                      <SelectValue placeholder="Select your industry" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="saas">SaaS</SelectItem>
+                      <SelectItem value="ecommerce">E-commerce</SelectItem>
+                      <SelectItem value="fintech">Fintech</SelectItem>
+                      <SelectItem value="healthtech">Healthtech</SelectItem>
+                      <SelectItem value="edtech">Edtech</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Professional Experience</Label>
+                  <Textarea
+                    value={formData.experience}
+                    onChange={(e) => handleChange('experience', e.target.value)}
+                    className="min-h-[100px] rounded-lg border-gray-200 focus-visible:ring-blue-500"
+                    placeholder="Brief description of your professional background..."
+                  />
+                </div>
+              </div>
+            )}
+
+            {step === 3 && (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">What are you looking for?</Label>
+                  <Select onValueChange={(value) => handleChange('lookingFor', value)}>
+                    <SelectTrigger className="h-11 rounded-lg border-gray-200">
+                      <SelectValue placeholder="Select your primary goal" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="cofounder">Co-founder</SelectItem>
+                      <SelectItem value="networking">Networking</SelectItem>
+                      <SelectItem value="mentorship">Mentorship</SelectItem>
+                      <SelectItem value="investment">Investment</SelectItem>
+                      <SelectItem value="collaboration">Collaboration</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Interests</Label>
+                  <Textarea
+                    value={formData.interests}
+                    onChange={(e) => handleChange('interests', e.target.value)}
+                    className="min-h-[100px] rounded-lg border-gray-200 focus-visible:ring-blue-500"
+                    placeholder="What technologies, industries, or areas interest you most?"
+                  />
+                </div>
+              </div>
+            )}
+
+            {step === 4 && (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Bio</Label>
+                  <Textarea
+                    value={formData.bio}
+                    onChange={(e) => handleChange('bio', e.target.value)}
+                    className="min-h-[100px] rounded-lg border-gray-200 focus-visible:ring-blue-500"
+                    placeholder="Tell the community about yourself..."
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Goals</Label>
+                  <Textarea
+                    value={formData.goals}
+                    onChange={(e) => handleChange('goals', e.target.value)}
+                    className="min-h-[100px] rounded-lg border-gray-200 focus-visible:ring-blue-500"
+                    placeholder="What do you hope to achieve in the next 6-12 months?"
+                  />
+                </div>
+              </div>
+            )}
+
+            <div className="flex justify-between pt-4">
+              {step > 1 && (
+                <Button
+                  type="button"
+                  onClick={prevStep}
+                  variant="outline"
+                  className="h-11 px-6 rounded-lg"
+                >
+                  Back
+                </Button>
+              )}
+              {step < 4 ? (
+                <Button
+                  type="button"
+                  onClick={nextStep}
+                  className="h-11 px-6 rounded-lg bg-gradient-to-r from-blue-500 to-purple-700 hover:from-blue-600 hover:to-purple-800 text-white ml-auto"
+                >
+                  Continue
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  className="h-11 px-6 rounded-lg bg-gradient-to-r from-blue-500 to-purple-700 hover:from-blue-600 hover:to-purple-800 text-white ml-auto"
+                >
+                  Complete Setup
+                </Button>
+              )}
+            </div>
+          </form>
+        </div>
       </Card>
     </div>
   );

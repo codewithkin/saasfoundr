@@ -33,21 +33,21 @@ export default function SignUp() {
   }
 
   return (
-    <div className="container relative h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-1 lg:px-0">
-      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-        <div className="flex flex-col space-y-2 text-center">
-          <h1 className="text-2xl md:text-4xl font-semibold tracking-tight">
-            Join SaaSFoundr
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Connect with fellow founders, share experiences, and find your next co-founder
-          </p>
-        </div>
+    <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 to-purple-50">
+      <div className="container flex min-h-screen items-center justify-center">
+        <div className="w-full max-w-[400px] space-y-8">
+          <div className="flex flex-col space-y-3 text-center">
+            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-purple-700 bg-clip-text text-transparent">
+              Welcome to SaaSFoundr
+            </h1>
+            <p className="text-base text-gray-600">
+              Join a community of innovative founders building the next generation of SaaS
+            </p>
+          </div>
 
-        {/* Email Sign Up Form */}
-        <form onSubmit={handleEmailSignUp}>
-          <div className="grid gap-4">
-            <div className="grid gap-2">
+          {/* Email Sign Up Form */}
+          <form onSubmit={handleEmailSignUp} className="space-y-4">
+            <div className="space-y-4">
               <Input
                 id="email"
                 placeholder="name@example.com"
@@ -58,81 +58,71 @@ export default function SignUp() {
                 disabled={isLoading}
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
-                className="focus-visible:ring-blue-600"
+                className="h-11 rounded-lg border-gray-200 focus-visible:ring-blue-500"
               />
               <Button 
                 disabled={isLoading}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                className="w-full h-11 bg-gradient-to-r from-blue-500 to-purple-700 hover:from-blue-600 hover:to-purple-800 text-white rounded-lg font-medium"
               >
                 {isLoading && (
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 )}
-                Sign up with Email
+                Get Started with Email
               </Button>
             </div>
-          </div>
-        </form>
+          </form>
 
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-gray-200" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-gradient-to-br from-blue-50 to-purple-50 px-2 text-gray-500">
+                Or continue with
+              </span>
+            </div>
           </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
-              Or continue with
-            </span>
+
+          <div className="space-y-3">
+            <Button
+              variant="outline"
+              disabled={isLoading}
+              onClick={() => handleProviderSignUp("github")}
+              className="w-full h-11 bg-[#24292F] text-white hover:bg-[#24292F]/90 border-0 rounded-lg font-medium"
+            >
+              {isLoading ? (
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Icons.gitHub className="mr-2 h-5 w-5" />
+              )}
+              Continue with GitHub
+            </Button>
+            <Button
+              variant="outline"
+              disabled={isLoading}
+              onClick={() => handleProviderSignUp("google")}
+              className="w-full h-11 bg-white text-gray-800 hover:bg-gray-50 border border-gray-200 rounded-lg font-medium"
+            >
+              {isLoading ? (
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Icons.google className="mr-2 h-5 w-5" />
+              )}
+              Continue with Google
+            </Button>
           </div>
+
+          <p className="text-center text-sm text-gray-500">
+            By signing up, you agree to our{" "}
+            <a href="/terms" className="underline underline-offset-4 hover:text-blue-500">
+              Terms of Service
+            </a>{" "}
+            and{" "}
+            <a href="/privacy" className="underline underline-offset-4 hover:text-blue-500">
+              Privacy Policy
+            </a>
+          </p>
         </div>
-
-        <div className="grid gap-2">
-          <Button
-            variant="outline"
-            disabled={isLoading}
-            onClick={() => handleProviderSignUp("github")}
-            className="bg-[#24292F] text-white hover:bg-[#24292F]/90 border-0"
-          >
-            {isLoading ? (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Icons.gitHub className="mr-2 h-4 w-4" />
-            )}
-            Continue with GitHub
-          </Button>
-          <Button
-            variant="outline"
-            disabled={isLoading}
-            onClick={() => handleProviderSignUp("google")}
-            className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white border-0"
-          >
-            {isLoading ? (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Icons.google className="mr-2 h-4 w-4" />
-            )}
-            Continue with Google
-          </Button>
-        </div>
-
-        <p className="px-8 text-center text-sm text-muted-foreground">
-          Already a member?{" "}
-          <a
-            href="/auth/signin"
-            className="underline underline-offset-4 hover:text-primary"
-          >
-            Sign in
-          </a>
-        </p>
-
-        <p className="px-8 text-center text-xs text-muted-foreground">
-          By signing up, you agree to our{" "}
-          <a href="/terms" className="underline underline-offset-4 hover:text-primary">
-            Terms of Service
-          </a>{" "}
-          and{" "}
-          <a href="/privacy" className="underline underline-offset-4 hover:text-primary">
-            Privacy Policy
-          </a>
-        </p>
       </div>
     </div>
   )
