@@ -15,6 +15,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Button } from '../ui/button';
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -111,8 +112,7 @@ export default function Sidebar() {
 
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div className="relative">
-                    <Flame className="h-3 w-3 text-red-500 absolute -top-1 -left-1" />
+                  <Button asChild className="relative bg-red-500 hover:bg-red-600 text-white">
                     <Link
                       href="/home/videos"
                       className={cn(
@@ -124,7 +124,7 @@ export default function Sidebar() {
                     >
                       <PlayCircle className="h-5 w-5" />
                     </Link>
-                  </div>
+                  </Button>
                 </TooltipTrigger>
                 <TooltipContent side="right">Videos</TooltipContent>
               </Tooltip>
