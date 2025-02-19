@@ -1,5 +1,5 @@
 import { Connect } from "@/components/home/Connect";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/auth";
 import { auth } from "@/lib/auth";
 
 export default async function ConnectPage() {
@@ -13,13 +13,13 @@ export default async function ConnectPage() {
     where: { email: session.user.email },
   });
 
-  if (!currentUser?.looking_for) {
+  if (!currentUser?.lookingFor) {
     return null;
   }
 
   const recommendedUsers = await prisma.user.findMany({
     where: {
-      role: currentUser.looking_for,
+      role: currentUser.lookingFor,
       NOT: {
         email: session.user.email,
       },
