@@ -3,7 +3,8 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { BookmarkIcon, HeartIcon, MessageCircleIcon, ShareIcon } from 'lucide-react';
+import { BookmarkIcon, HeartIcon, MessageCircleIcon } from 'lucide-react';
+import { SharePopover } from './SharePopover';
 import { getPosts } from '@/app/actions/post';
 import { toggleLike } from '@/app/actions/like';
 import { formatDistanceToNow } from 'date-fns';
@@ -98,10 +99,7 @@ export function Posts() {
               <BookmarkIcon className="h-4 w-4" />
               <span>Save</span>
             </Button>
-            <Button variant="ghost" size="sm" className="space-x-2">
-              <ShareIcon className="h-4 w-4" />
-              <span>Share</span>
-            </Button>
+            <SharePopover postId={post.post_id} />
           </div>
         </article>
       ))}
