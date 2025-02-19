@@ -16,15 +16,15 @@ export default function HomeLayout({
       <Sidebar />
       <div className="flex-1">
         {children}
-        <main className="flex-1 flex justify-center">
-          <div className="w-full max-w-7xl grid grid-cols-1 md:grid-cols-[300px_600px_300px] gap-4 p-4">
-            <div className="hidden md:block">
+        <main className="flex-1 flex-col md:flex-row w-full justify-between">
+          <div className="w-full flex flex-col md:flex-row gap-4 p-4">
+            <div className="hidden md:block md:w-1/4">
               {connect}
             </div>
-            <div>
+            <div className="md:w-2/4">
               {posts}
             </div>
-            <div className="hidden lg:block">
+            <div className="hidden lg:block md:w-1/4">
               {extras}
             </div>
           </div>

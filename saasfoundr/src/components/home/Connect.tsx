@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { UserPlus } from "lucide-react";
+import { UserPlus, UserPlus2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface ConnectProps {
@@ -19,7 +19,7 @@ interface ConnectProps {
 
 export function Connect({ users }: ConnectProps) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 h-full overflow-y-scroll">
       <h2 className="text-xl font-semibold">Connect</h2>
       <div className="space-y-4">
         {users.map((user) => (
@@ -33,16 +33,14 @@ export function Connect({ users }: ConnectProps) {
                 <CardTitle className="text-lg">{user.name}</CardTitle>
                 <CardDescription>{user.role}</CardDescription>
               </div>
+
+              <Button className="bg-blue-500 hover:bg-blue-700" size="icon">
+                <UserPlus2 size={20} />
+              </Button>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">{user.description}</p>
+              <p className="text-sm text-muted-foreground">{user.bio}</p>
             </CardContent>
-            <CardFooter>
-              <Button className="w-full" size="sm">
-                <UserPlus className="w-4 h-4 mr-2" />
-                Follow
-              </Button>
-            </CardFooter>
           </Card>
         ))}
       </div>
