@@ -9,6 +9,12 @@ import Image from 'next/image';
 import { MobileNav } from './MobileNav';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -20,107 +26,135 @@ export default function Sidebar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <div className="hidden md:flex min-h-screen flex-col items-start justify-between border-r bg-background p-3">
-        <article className="space-y-8 w-full">
+      <div className="hidden md:flex min-h-screen w-[70px] flex-col items-center justify-between border-r bg-background p-3">
+        <article className="space-y-8">
           {/* App Icon */}
-          <Link href="/home" className="flex items-center gap-2">
+          <Link href="/home" className="flex items-center justify-center">
             <Image 
               src="/brand/logo.png"
               alt="SaaSFoundr Logo"
-              width={50}
-              height={50}
+              width={40}
+              height={40}
             />
           </Link>
 
           {/* Navigation */}
-          <nav className="flex flex-col gap-6 w-full">
-            <Link
-              href="/home"
-              className={cn(
-                "flex items-center gap-3 p-2 rounded-lg transition-colors",
-                pathname === "/home" 
-                  ? "bg-blue-500 text-white font-semibold"
-                  : "hover:bg-accent/10"
-              )}
-            >
-              <Home className="h-5 w-5" />
-              <span>Home</span>
-            </Link>
+          <nav className="flex flex-col items-center gap-6">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link
+                    href="/home"
+                    className={cn(
+                      "p-2 rounded-lg transition-colors",
+                      pathname === "/home"
+                        ? "bg-blue-500 text-white"
+                        : "hover:bg-accent/10"
+                    )}
+                  >
+                    <Home className="h-5 w-5" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right">Home</TooltipContent>
+              </Tooltip>
 
-            <Link
-              href="/home/hub"
-              className={cn(
-                "flex items-center gap-3 p-2 rounded-lg transition-colors",
-                pathname === "/home/hub"
-                  ? "bg-blue-500 text-white font-semibold"
-                  : "hover:bg-accent/10"
-              )}
-            >
-              <Users className="h-5 w-5" />
-              <span>Hub</span>
-            </Link>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link
+                    href="/home/hub"
+                    className={cn(
+                      "p-2 rounded-lg transition-colors",
+                      pathname === "/home/hub"
+                        ? "bg-blue-500 text-white"
+                        : "hover:bg-accent/10"
+                    )}
+                  >
+                    <Users className="h-5 w-5" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right">Hub</TooltipContent>
+              </Tooltip>
 
-            <Link
-              href="/home/discover"
-              className={cn(
-                "flex items-center gap-3 p-2 rounded-lg transition-colors",
-                pathname === "/home/discover"
-                  ? "bg-blue-500 text-white font-semibold"
-                  : "hover:bg-accent/10"
-              )}
-            >
-              <Search className="h-5 w-5" />
-              <span>Discover</span>
-            </Link>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link
+                    href="/home/discover"
+                    className={cn(
+                      "p-2 rounded-lg transition-colors",
+                      pathname === "/home/discover"
+                        ? "bg-blue-500 text-white"
+                        : "hover:bg-accent/10"
+                    )}
+                  >
+                    <Search className="h-5 w-5" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right">Discover</TooltipContent>
+              </Tooltip>
 
-            <Link
-              href="/home/messages"
-              className={cn(
-                "flex items-center gap-3 p-2 rounded-lg transition-colors",
-                pathname === "/home/messages"
-                  ? "bg-blue-500 text-white font-semibold"
-                  : "hover:bg-accent/10"
-              )}
-            >
-              <MessageSquare className="h-5 w-5" />
-              <span>Messages</span>
-            </Link>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link
+                    href="/home/messages"
+                    className={cn(
+                      "p-2 rounded-lg transition-colors",
+                      pathname === "/home/messages"
+                        ? "bg-blue-500 text-white"
+                        : "hover:bg-accent/10"
+                    )}
+                  >
+                    <MessageSquare className="h-5 w-5" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right">Messages</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </nav>
         </article>
 
         {/* Footer */}
-        <footer className="space-y-4 w-full">
-          <Link
-            href="/home/settings"
-            className={cn(
-              "flex items-center gap-3 p-2 rounded-lg transition-colors",
-              pathname === "/home/settings"
-                ? "bg-blue-500 text-white font-semibold"
-                : "hover:bg-accent/10"
-            )}
-          >
-            <Settings className="h-5 w-5" />
-            <span>Settings</span>
-          </Link>
+        <footer className="space-y-4">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href="/home/settings"
+                  className={cn(
+                    "p-2 rounded-lg transition-colors block",
+                    pathname === "/home/settings"
+                      ? "bg-blue-500 text-white"
+                      : "hover:bg-accent/10"
+                  )}
+                >
+                  <Settings className="h-5 w-5" />
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right">Settings</TooltipContent>
+            </Tooltip>
 
-          <Link
-            href="/home/profile"
-            className={cn(
-              "flex items-center gap-3 p-2 rounded-lg transition-colors",
-              pathname === "/home/profile"
-                ? "bg-blue-500 text-white font-semibold"
-                : "hover:bg-accent/10"
-            )}
-          >
-            <Avatar 
-              src={user?.image || undefined}
-              name={user?.name || undefined}
-              size="sm"
-              isBordered
-              className="transition-transform hover:scale-105"
-            />
-            <span>Profile</span>
-          </Link>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href="/home/profile"
+                  className={cn(
+                    "block",
+                    pathname === "/home/profile"
+                      ? "bg-blue-500 rounded-full"
+                      : ""
+                  )}
+                >
+                  <Avatar 
+                    src={user?.image || undefined}
+                    name={user?.name || undefined}
+                    size="sm"
+                    isBordered
+                    className="transition-transform hover:scale-105"
+                  />
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right">Profile</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </footer>
       </div>
 
