@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, CardHeader, CardBody } from "@nextui-org/react";
+import { Card, CardContent, CardHeader } from "../ui/card";
 
 interface StatsCardsProps {
   stats: {
@@ -17,27 +17,27 @@ export function StatsCards({ stats }: StatsCardsProps) {
         <CardHeader className="pb-2">
           <h2 className="text-lg font-medium">Engagement Rate</h2>
         </CardHeader>
-        <CardBody>
+        <CardContent>
           <p className="text-2xl">{stats.engagementRate}%</p>
-        </CardBody>
+        </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="pb-2">
           <h2 className="text-lg font-medium">Connections</h2>
         </CardHeader>
-        <CardBody>
+        <CardContent>
           <p className="text-2xl">{stats.connections}</p>
-        </CardBody>
+        </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="pb-2">
           <h2 className="text-lg font-medium">Total Posts</h2>
         </CardHeader>
-        <CardBody>
+        <CardContent>
           <p className="text-2xl">{stats.communityPosts}</p>
-        </CardBody>
+        </CardContent>
       </Card>
     </div>
   );
