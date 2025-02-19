@@ -30,7 +30,11 @@ export async function createPost(data: z.infer<typeof postSchema>) {
   const post = await prisma.post.create({
     data: {
       content: validatedData.content,
-      authorId: user.id,
+      author: {
+        connect: {
+          id: user.id
+        }
+      }
     },
     include: {
       author: {
