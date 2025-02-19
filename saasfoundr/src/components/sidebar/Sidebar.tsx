@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Home, Users, Search, MessageSquare, Settings } from 'lucide-react';
+import { Home, Users, Search, MessageSquare, Settings, Flame, PlayCircle } from 'lucide-react';
 import { Avatar } from "@nextui-org/react";
 import { useQuery } from '@tanstack/react-query';
 import { getCurrentUser } from '@/app/actions/user';
@@ -107,6 +107,26 @@ export default function Sidebar() {
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="right">Messages</TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="relative">
+                    <Flame className="h-3 w-3 text-red-500 absolute -top-1 -left-1" />
+                    <Link
+                      href="/home/videos"
+                      className={cn(
+                        "p-2 rounded-lg transition-colors",
+                        pathname === "/home/videos"
+                          ? "bg-red-500 text-white"
+                          : "hover:bg-red-500/10"
+                      )}
+                    >
+                      <PlayCircle className="h-5 w-5" />
+                    </Link>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="right">Videos</TooltipContent>
               </Tooltip>
             </TooltipProvider>
           </nav>
