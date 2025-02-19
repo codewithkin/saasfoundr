@@ -70,26 +70,23 @@ export async function connectWithUser(userId: string) {
       })
     }
 
-    // Get updated connection status
-    const updatedUser = await prisma.user.findUnique({
-      where: { id: currentUser.id },
-      include: {
-        connections: true
-      }
-    });
+    // Get updated connection status for both users
+    const [updatedCurrentUser, updatedTargetUser] = await Promise.all([
+      prisma.user.findUnique({
+        where: { id: currentUser.id },
+        include: {
+          connections: true
+        }
+      }),
+      prisma.user.findUnique({
+        where: { id: userId },
+        include: {
+          connections: true
+        }
+      })
+    ]);
 
-    const updatedOtherUser = await prisma.user.findUnique({
-      where: {
-        id: userId
-      },
-      include: {
-        connections: true
-      }
-    })
-
-    console.log("UPDATED USER: ", updatedOtherUser);
-
-    const isNowConnected = updatedUser?.connections.some(
+    const isNowConnected = updatedCurrentUser?.connections.some(
       connection => connection.id === userId
     ) ?? false;
 
@@ -100,7 +97,11 @@ export async function connectWithUser(userId: string) {
       isConnected: isNowConnected,
       targetUser: {
         id: targetUser.id,
-        name: targetUser.name
+        name: targetUser.name,
+        connections: updatedTargetUser?.connections || []
+      },
+      currentUser: {
+        connections: updatedCurrentUser?.connections || []
       }
     };
   } catch (error) {
