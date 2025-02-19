@@ -17,19 +17,19 @@ export function MobileNav() {
           <Home className="h-6 w-6 icon-gradient" />
         </Link>
 
-        <Link href="/home/hub" className="flex items-center">
+        <Link href="/hub" className="flex items-center">
           <Users className="h-6 w-6 icon-gradient" />
         </Link>
 
-        <Link href="/home/discover" className="flex items-center">
+        <Link href="/discover" className="flex items-center">
           <Search className="h-6 w-6 icon-gradient" />
         </Link>
 
-        <Link href="/home/messages" className="flex items-center">
+        <Link href="/messages" className="flex items-center">
           <MessageSquare className="h-6 w-6 icon-gradient" />
         </Link>
 
-        <Link href="/home/profile" className="flex items-center">
+        <Link href="/profile" className="flex items-center">
           <Avatar 
             src={user?.image || undefined}
             name={user?.name || undefined}

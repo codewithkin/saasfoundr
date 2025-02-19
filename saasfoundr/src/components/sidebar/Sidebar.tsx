@@ -62,10 +62,10 @@ export default function Sidebar() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
-                    href="/home/hub"
+                    href="/hub"
                     className={cn(
                       "p-2 rounded-lg transition-colors",
-                      pathname === "/home/hub"
+                      pathname === "/hub"
                         ? "bg-blue-500 text-white"
                         : "hover:bg-accent/10"
                     )}
@@ -79,10 +79,10 @@ export default function Sidebar() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
-                    href="/home/discover"
+                    href="/discover"
                     className={cn(
                       "p-2 rounded-lg transition-colors",
-                      pathname === "/home/discover"
+                      pathname === "/discover"
                         ? "bg-blue-500 text-white"
                         : "hover:bg-accent/10"
                     )}
@@ -96,10 +96,10 @@ export default function Sidebar() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
-                    href="/home/messages"
+                    href="/messages"
                     className={cn(
                       "p-2 rounded-lg transition-colors",
-                      pathname === "/home/messages"
+                      pathname === "/messages"
                         ? "bg-blue-500 text-white"
                         : "hover:bg-accent/10"
                     )}
@@ -114,10 +114,10 @@ export default function Sidebar() {
                 <TooltipTrigger asChild>
                   <Button asChild className="relative bg-red-500 hover:bg-red-600 text-white">
                     <Link
-                      href="/home/videos"
+                      href="/videos"
                       className={cn(
                         "p-2 rounded-lg transition-colors",
-                        pathname === "/home/videos"
+                        pathname === "/videos"
                           ? "bg-red-500 text-white"
                           : "hover:bg-red-500/10"
                       )}
