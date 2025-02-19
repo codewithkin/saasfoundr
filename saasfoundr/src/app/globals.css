@@ -68,6 +68,10 @@ body {
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 0 2px rgba(139, 92, 246, 0.3));
   }
+
+  .scroll-effect {
+    @apply h-full min-h-screen max-h-screen overflow-y-scroll
+  }
   
   .icon-gradient:hover {
     @apply from-[#9333EA] to-[#2563EB];

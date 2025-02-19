@@ -19,7 +19,7 @@ interface ConnectProps {
 
 export function Connect({ users }: ConnectProps) {
   return (
-    <div className="space-y-4 h-full overflow-y-scroll">
+    <div className="space-y-4 scroll-effect">
       <h2 className="text-xl font-semibold">Connect</h2>
       <div className="space-y-4">
         {users.map((user) => (

@@ -12,7 +12,7 @@ export default function HomeLayout({
   extras: React.ReactNode;
 }) {
   return (
-    <div className="flex md:max-h-screen Mmd:overflow-hidden md:min-h-screen">
+    <div className="flex max-h-screen md:overflow-hidden min-h-screen">
       <Sidebar />
       <div className="flex-1">
         {children}
