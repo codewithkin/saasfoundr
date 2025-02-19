@@ -5,7 +5,6 @@ export async function getPosts() {
   const session = await auth();
   const userId = session?.user?.id;
 
-  console.log('getPosts: About to query posts');
   const posts = await prisma.post.findMany({
     orderBy: {
       created_at: 'desc'
@@ -42,8 +41,6 @@ export async function getPosts() {
     isLiked: post.likes.length > 0,
     likeCount: post._count.likes
   }));
-
-  console.log("all posts: ", postsWithLikeInfo);
 
   return postsWithLikeInfo;
 }

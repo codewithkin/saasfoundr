@@ -1,30 +1,41 @@
 "use server";
 
-import { prisma } from "@/lib/auth";
-import { auth } from "@/lib/auth";
+import { prisma, auth } from "@/lib/auth";
 
 export async function toggleLike(postId: string) {
   const session = await auth();
-  if (!session?.user?.id) {
+
+  if (!session?.user?.email) {
     throw new Error("Not authenticated");
   }
 
-  const userId = session.user.id;
+  // Fetch the full user data using email
+  const user = await prisma.user.findUnique({
+    where: {
+      email: session.user.email
+    }
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
 
   // Check if the like already exists
-  const existingLike = await prisma.like.findFirst({
+  const existingLike = await prisma.like.findUnique({
     where: {
-      postId,
-      userId,
-    },
+      postId_userId: {
+        postId,
+        userId: user.id
+      }
+    }
   });
 
   if (existingLike) {
     // Unlike: Delete the existing like
     await prisma.like.delete({
       where: {
-        id: existingLike.id,
-      },
+        id: existingLike.id
+      }
     });
     return false; // Indicates the post is now unliked
   } else {
@@ -32,8 +43,8 @@ export async function toggleLike(postId: string) {
     await prisma.like.create({
       data: {
         postId,
-        userId,
-      },
+        userId: user.id
+      }
     });
     return true; // Indicates the post is now liked
   }
