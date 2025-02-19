@@ -1,7 +1,9 @@
 "use server";
-import { prisma } from "@/lib/auth";
+import { prisma, auth } from "@/lib/auth";
 
 export async function getPosts() {
+  const session = await auth();
+  const userId = session?.user?.id;
 
   console.log('getPosts: About to query posts');
   const posts = await prisma.post.findMany({
@@ -16,11 +18,32 @@ export async function getPosts() {
           image: true,
           role: true
         }
+      },
+      likes: {
+        where: userId ? {
+          user: {
+            id: userId
+          }
+        } : undefined,
+        select: {
+          id: true
+        }
+      },
+      _count: {
+        select: {
+          likes: true
+        }
       }
     }
   });
 
-  console.log("all posts: ", posts);
+  const postsWithLikeInfo = posts.map(post => ({
+    ...post,
+    isLiked: post.likes.length > 0,
+    likeCount: post._count.likes
+  }));
 
-  return posts;
+  console.log("all posts: ", postsWithLikeInfo);
+
+  return postsWithLikeInfo;
 }

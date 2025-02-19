@@ -1,32 +1,55 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { BookmarkIcon, HeartIcon, MessageCircleIcon, ShareIcon } from 'lucide-react';
 import { getPosts } from '@/app/actions/post';
+import { toggleLike } from '@/app/actions/like';
 import { formatDistanceToNow } from 'date-fns';
 import { UserSkeletonList } from '../skeletons/UserSkeleton';
+import { cn } from '@/lib/utils';
 
 export function Posts() {
-  console.log('Posts component: Starting to fetch posts');
+  const queryClient = useQueryClient();
   const { data: posts, isLoading, error } = useQuery({
     queryKey: ['posts'],
     queryFn: async () => {
-      console.log('Posts component: Calling getPosts function');
       const result = await getPosts();
-      console.log('Posts component: Got result from getPosts:', result);
       return result;
     }
   });
 
+  const handleLike = async (postId: string) => {
+    try {
+      // Optimistically update the UI
+      queryClient.setQueryData(['posts'], (oldData: any) => {
+        return oldData.map((post: any) => {
+          if (post.post_id === postId) {
+            return {
+              ...post,
+              isLiked: !post.isLiked,
+              likeCount: post.isLiked ? post.likeCount - 1 : post.likeCount + 1
+            };
+          }
+          return post;
+        });
+      });
+
+      // Make the API call
+      await toggleLike(postId);
+    } catch (error) {
+      // If the API call fails, revert the optimistic update
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      console.error('Error toggling like:', error);
+    }
+  };
+
   if (isLoading) {
-    console.log('Posts component: Loading...');
     return <UserSkeletonList />;
   }
 
   if (error) {
-    console.error('Posts component: Error fetching posts:', error);
     return <div>Error loading posts</div>;
   }
 
@@ -55,9 +78,17 @@ export function Posts() {
 
           {/* Actions */}
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm" className="space-x-2">
-              <HeartIcon className="h-4 w-4" />
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className={cn("space-x-2", post.isLiked && "text-red-500")} 
+              onClick={() => handleLike(post.post_id)}
+            >
+              <HeartIcon className={cn("h-4 w-4", post.isLiked && "fill-current")} />
               <span>Like</span>
+              {post.likeCount > 0 && (
+                <span className="ml-1 text-sm text-muted-foreground">({post.likeCount})</span>
+              )}
             </Button>
             <Button variant="ghost" size="sm" className="space-x-2">
               <MessageCircleIcon className="h-4 w-4" />
