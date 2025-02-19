@@ -12,6 +12,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { UserSkeletonList } from '../skeletons/UserSkeleton';
 import { cn } from '@/lib/utils';
 import { CommentDialog } from './CommentDialog';
+import { CreatePostDialog } from './CreatePostDialog';
 
 export function Posts() {
   const queryClient = useQueryClient();
@@ -74,7 +75,12 @@ export function Posts() {
   };
 
   if (isLoading) {
-    return <UserSkeletonList />;
+    return (
+      <>
+        <UserSkeletonList />
+        <CreatePostDialog />
+      </>
+    );
   }
 
   if (error) {
@@ -83,6 +89,7 @@ export function Posts() {
 
   return (
     <div className="space-y-4 scroll-effect">
+      <CreatePostDialog />
       {posts?.map((post) => (
         <article key={post.post_id} className="py-6 border-y">
           {/* User Profile Section */}

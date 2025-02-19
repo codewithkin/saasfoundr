@@ -1,0 +1,98 @@
+'use client';
+
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { PenSquare } from "lucide-react";
+import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { createPost } from "@/app/actions/post";
+import { toast } from "sonner";
+
+export function CreatePostDialog() {
+  const [open, setOpen] = useState(false);
+  const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [charCount, setCharCount] = useState(0);
+  const queryClient = useQueryClient();
+  const MAX_CHARS = 500;
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const text = e.target.value;
+    if (text.length <= MAX_CHARS) {
+      setContent(text);
+      setCharCount(text.length);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!content.trim()) return;
+
+    try {
+      setLoading(true);
+      const newPost = await createPost({ content });
+      
+      // Update posts list
+      queryClient.setQueryData(['posts'], (oldData: any) => {
+        return [newPost, ...(oldData || [])];
+      });
+
+      // Clear form and close dialog
+      setContent("");
+      setCharCount(0);
+      setOpen(false);
+      toast.success('Post created successfully');
+    } catch (error) {
+      console.error('Error creating post:', error);
+      toast.error('Failed to create post');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button 
+          size="lg" 
+          className="fixed bottom-6 right-6 shadow-lg rounded-full h-14 w-14 p-0 md:h-auto md:w-auto md:p-6 md:rounded-lg"
+        >
+          <PenSquare className="h-6 w-6 md:mr-2" />
+          <span className="hidden md:inline">Create Post</span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[512px]">
+        <DialogHeader>
+          <DialogTitle>Create a New Post</DialogTitle>
+        </DialogHeader>
+        <div className="mt-4 space-y-4">
+          <div className="space-y-2">
+            <Textarea
+              placeholder="What's on your mind?"
+              value={content}
+              onChange={handleContentChange}
+              className="min-h-[120px] resize-none"
+            />
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">
+                {charCount}/{MAX_CHARS} characters
+              </span>
+              <Button
+                onClick={handleSubmit}
+                disabled={loading || !content.trim() || charCount > MAX_CHARS}
+              >
+                {loading ? 'Creating...' : 'Create Post'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
