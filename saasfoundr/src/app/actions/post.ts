@@ -39,7 +39,8 @@ export async function getPosts() {
       _count: {
         select: {
           likes: true,
-          saves: true
+          saves: true,
+          comments: true
         }
       }
     }

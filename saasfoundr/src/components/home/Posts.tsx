@@ -3,7 +3,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Bookmark, BookmarkCheck, HeartIcon, MessageCircleIcon } from 'lucide-react';
+import { Bookmark, BookmarkCheck, HeartIcon } from 'lucide-react';
 import { SharePopover } from './SharePopover';
 import { getPosts } from '@/app/actions/post';
 import { toggleLike } from '@/app/actions/like';
@@ -11,6 +11,7 @@ import { toggleSave } from '@/app/actions/save';
 import { formatDistanceToNow } from 'date-fns';
 import { UserSkeletonList } from '../skeletons/UserSkeleton';
 import { cn } from '@/lib/utils';
+import { CommentDialog } from './CommentDialog';
 
 export function Posts() {
   const queryClient = useQueryClient();
@@ -117,10 +118,7 @@ export function Posts() {
                 <span className="ml-1 text-sm text-muted-foreground">({post.likeCount})</span>
               )}
             </Button>
-            <Button variant="ghost" size="sm" className="space-x-2">
-              <MessageCircleIcon className="h-4 w-4" />
-              <span>Comment</span>
-            </Button>
+            <CommentDialog postId={post.post_id} commentCount={post._count.comments} />
             <Button 
               variant="ghost" 
               size="sm" 
