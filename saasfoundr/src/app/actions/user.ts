@@ -2,7 +2,6 @@
 
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/auth";
-import main from "@/lib/seed";
 
 export async function getCurrentUser() {
   const session = await auth();

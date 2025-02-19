@@ -21,7 +21,7 @@ export function Posts() {
   return (
     <div className="space-y-4 scroll-effect">
       {posts?.map((post) => (
-        <article key={post.id} className="py-6 border-y">
+        <article key={post.post_id} className="py-6 border-y">
           {/* User Profile Section */}
           <div className="flex items-center space-x-3 mb-4">
             <Avatar>
@@ -31,7 +31,7 @@ export function Posts() {
             <div>
               <h3 className="font-semibold">{post.author.name}</h3>
               <p className="text-sm text-muted-foreground">
-                {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
+                {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
               </p>
             </div>
           </div>
