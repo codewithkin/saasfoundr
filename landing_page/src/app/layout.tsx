@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     siteName: "SaaSFoundr",
     images: [
       {
-        url: "/path/to/your/og-image.jpg", // Replace with the path to your OG image
+        url: "/og/main.png", // Replace with the path to your OG image
         width: 1200,
         height: 630,
         alt: "SaaSFoundr Co-Founder Matching",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     title: "SaaSFoundr - Find Your Perfect Co-Founder Fast",
     description:
       "Join a community of ambitious entrepreneurs and find the ideal co-founder to bring your startup vision to life.",
-    images: ["/path/to/your/twitter-image.jpg"], // Replace with the Twitter image path
+    images: ["/og/summary_large_image.png"], // Replace with the Twitter image path
   },
   icons: {
     icon: [
