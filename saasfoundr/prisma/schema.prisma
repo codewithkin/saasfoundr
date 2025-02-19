@@ -56,6 +56,11 @@ model User {
   saasProducts  SaaSProduct[]
   connectionsFrom User[] @relation("UserConnections")
   followedBy User[] @relation("UserFollowedBy")
+  
+  // New engagement relations
+  likes        Like[]
+  comments     Comment[]
+  savedPosts   Save[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -70,11 +75,108 @@ model VerificationToken {
 }
 
 model Post {
-  post_id      String   @id @default(cuid())
+  post_id      String    @id @default(cuid())
   user_id      String
-  content      String   @db.Text
-  created_at   DateTime @default(now())
-  user         User     @relation(fields: [user_id], references: [id])
+  content      String    @db.Text
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt @default(now())
+  type         PostType  @default(GENERAL)
+  milestone    Milestone?
+  metrics      Json?     // For sharing metrics/KPIs
+  product_id   String?   // Optional reference to a SaaS product
+  tags         String[]  @default([])  // For categorizing posts
+  visibility   Visibility @default(PUBLIC)
+  
+  // Engagement metrics
+  likes        Like[]
+  comments     Comment[]
+  saves        Save[]
+  shares       Int       @default(0)
+  
+  // Relations
+  author       User      @relation(fields: [user_id], references: [id])
+  product      SaaSProduct? @relation(fields: [product_id], references: [product_id])
+
+  @@index([user_id])
+  @@index([type])
+  @@index([created_at])
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  createdAt DateTime @default(now())
+  
+  post      Post     @relation(fields: [postId], references: [post_id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@index([userId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  postId    String
+  userId    String
+  parentId  String?  // For nested comments
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  post      Post     @relation(fields: [postId], references: [post_id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent    Comment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[] @relation("CommentReplies")
+
+  @@index([postId])
+  @@index([userId])
+  @@index([parentId])
+}
+
+model Save {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  createdAt DateTime @default(now())
+  
+  post      Post     @relation(fields: [postId], references: [post_id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@index([userId])
+}
+
+enum PostType {
+  GENERAL      // Regular updates
+  MILESTONE    // Achievement announcements
+  QUESTION     // Seeking advice/help
+  INSIGHT      // Sharing learnings
+  SHOWCASE     // Product updates/launches
+  METRICS      // Sharing business metrics
+  HIRING       // Team expansion posts
+  EVENT        // Webinars, meetups, etc.
+}
+
+enum Visibility {
+  PUBLIC       // Visible to everyone
+  CONNECTIONS  // Visible only to connections
+  PRIVATE      // Visible only to the author
+}
+
+enum Milestone {
+  LAUNCH        // Product launch
+  FIRST_SALE    // First paying customer
+  FIRST_1K_MRR  // $1K MRR milestone
+  FIRST_10K_MRR // $10K MRR milestone
+  FIRST_100K_MRR // $100K MRR milestone
+  FUNDING       // Funding round
+  ACQUISITION   // Company acquired
+  TEAM_GROWTH   // Team expansion
+  PARTNERSHIP   // Strategic partnership
+  CUSTOM        // Custom milestone
 }
 
 model SaaSProduct {
@@ -87,5 +189,6 @@ model SaaSProduct {
   features     Json
   users        Int
   mrr          Float
+  posts        Post[]
   user         User     @relation(fields: [user_id], references: [id])
 }

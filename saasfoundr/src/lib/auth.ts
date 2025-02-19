@@ -9,7 +9,7 @@ import SignInEmail from "@/components/emails/signin-email"
 import { render } from "@react-email/render"
 
 export const prisma = new PrismaClient()
-const resend = new ResendClient(process.env.AUTH_RESEND_KEY)
+const resend = new ResendClient("re_GqCa1YPg_DneMeskUoWabZhf5D4qrwBTC")
 
 export const { 
   handlers: { GET, POST },
@@ -28,7 +28,7 @@ export const {
       clientSecret: process.env.GOOGLE_SECRET,
     }),
     Resend({
-      apiKey: process.env.AUTH_RESEND_KEY,
+      apiKey: "re_GqCa1YPg_DneMeskUoWabZhf5D4qrwBTC",
       from: "no-reply@aiseogen.com",
       async sendVerificationRequest({ identifier: email, url }) {
         try {
