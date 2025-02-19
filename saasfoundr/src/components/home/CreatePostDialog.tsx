@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
+import EmojiPicker, { Theme } from 'emoji-picker-react';
 import {
   Dialog,
   DialogContent,
@@ -9,8 +10,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { PenSquare } from "lucide-react";
-import { useState } from "react";
+import { PenSquare, Smile } from "lucide-react";
+import { useRef, useState } from "react";
+import { useClickOutside } from "@/hooks/useClickOutside";
 import { useQueryClient } from "@tanstack/react-query";
 import { createPost } from "@/app/actions/post";
 import { toast } from "sonner";
@@ -20,8 +22,12 @@ export function CreatePostDialog() {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const [charCount, setCharCount] = useState(0);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const emojiPickerRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const MAX_CHARS = 500;
+
+  useClickOutside(emojiPickerRef, () => setShowEmojiPicker(false));
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
@@ -73,22 +79,50 @@ export function CreatePostDialog() {
         </DialogHeader>
         <div className="mt-4 space-y-4">
           <div className="space-y-2">
-            <Textarea
-              placeholder="What's on your mind?"
-              value={content}
-              onChange={handleContentChange}
-              className="min-h-[120px] resize-none"
-            />
+            <div className="relative">
+              <Textarea
+                placeholder="What's on your mind?"
+                value={content}
+                onChange={handleContentChange}
+                className="min-h-[120px] resize-none"
+              />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="absolute bottom-2 right-2 h-8 w-8 p-0"
+                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              >
+                <Smile className="h-5 w-5" />
+              </Button>
+              {showEmojiPicker && (
+                <div ref={emojiPickerRef} className="absolute bottom-12 right-0 z-50">
+                  <EmojiPicker
+                    theme={Theme.AUTO}
+                    onEmojiClick={(emojiData) => {
+                      const newContent = content + emojiData.emoji;
+                      if (newContent.length <= MAX_CHARS) {
+                        setContent(newContent);
+                        setCharCount(newContent.length);
+                      }
+                    }}
+                    width={300}
+                    height={400}
+                  />
+                </div>
+              )}
+            </div>
             <div className="flex justify-between items-center">
               <span className="text-sm text-muted-foreground">
                 {charCount}/{MAX_CHARS} characters
               </span>
-              <Button
-                onClick={handleSubmit}
-                disabled={loading || !content.trim() || charCount > MAX_CHARS}
-              >
-                {loading ? 'Creating...' : 'Create Post'}
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  onClick={handleSubmit}
+                  disabled={loading || !content.trim() || charCount > MAX_CHARS}
+                >
+                  {loading ? 'Creating...' : 'Create Post'}
+                </Button>
+              </div>
             </div>
           </div>
         </div>
