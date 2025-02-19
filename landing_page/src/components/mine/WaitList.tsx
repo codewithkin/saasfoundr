@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Rocket, Gift, Users, Clock } from "lucide-react";
 import { useState } from "react";
+import { Button } from "../ui/button";
 
 export default function WaitList() {
   const [email, setEmail] = useState("");
@@ -59,7 +60,7 @@ export default function WaitList() {
 
           {!submitted ? (
             <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-              <div className="flex gap-2">
+              <div className="flex md:flex-row flex-col w-full gap-2">
                 <input
                   type="email"
                   value={email}
@@ -71,13 +72,13 @@ export default function WaitList() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-6 py-3 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 transition-colors flex items-center gap-2 disabled:opacity-70"
+                  className="px-6 py-3 bg-blue-500 w-fit text-white rounded-lg font-medium hover:bg-blue-600 transition-colors flex items-center gap-2 disabled:opacity-70"
                 >
                   {isSubmitting ? (
                     "Joining..."
                   ) : (
                     <>
-                      Join Now
+                      Join
                       <ArrowRight className="w-4 h-4" />
                     </>
                   )}
