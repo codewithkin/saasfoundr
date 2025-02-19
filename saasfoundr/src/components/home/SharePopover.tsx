@@ -9,16 +9,27 @@ import {
 import { ShareIcon, Link2Icon, CheckIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import {
+  FacebookShareButton,
+  LinkedinShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+  FacebookIcon,
+  LinkedinIcon,
+  TwitterIcon,
+  WhatsappIcon,
+} from 'react-share';
 
 interface SharePopoverProps {
   postId: string;
+  content: string;
 }
 
-export function SharePopover({ postId }: SharePopoverProps) {
+export function SharePopover({ postId, content }: SharePopoverProps) {
   const [copied, setCopied] = useState(false);
+  const url = `${window.location.origin}/posts/${postId}`;
 
   const handleCopyLink = async () => {
-    const url = `${window.location.origin}/posts/${postId}`;
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
@@ -37,8 +48,8 @@ export function SharePopover({ postId }: SharePopoverProps) {
           <span>Share</span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-48">
-        <div className="space-y-2">
+      <PopoverContent className="w-64">
+        <div className="space-y-4">
           <Button 
             variant="ghost" 
             size="sm" 
@@ -57,6 +68,47 @@ export function SharePopover({ postId }: SharePopoverProps) {
               </>
             )}
           </Button>
+
+          <div className="border-t pt-2">
+            <p className="text-sm text-muted-foreground mb-2">Share on social media</p>
+            <div className="flex items-center justify-between gap-2">
+              <LinkedinShareButton 
+                url={url} 
+                title="Check out this post on SaaSFoundr!"
+                summary={content}
+                className="hover:opacity-80 transition-opacity"
+              >
+                <LinkedinIcon size={32} round />
+              </LinkedinShareButton>
+
+              <FacebookShareButton 
+                url={url} 
+                quote={`${content}\n\nCheck out this post on SaaSFoundr!`}
+                hashtag="#saasfoundr"
+                className="hover:opacity-80 transition-opacity"
+              >
+                <FacebookIcon size={32} round />
+              </FacebookShareButton>
+
+              <TwitterShareButton 
+                url={url} 
+                title={`${content.slice(0, 180)}...\n\nCheck out this post on SaaSFoundr!`}
+                hashtags={["saasfoundr", "saas", "startup"]}
+                className="hover:opacity-80 transition-opacity"
+              >
+                <TwitterIcon size={32} round />
+              </TwitterShareButton>
+
+              <WhatsappShareButton 
+                url={url} 
+                title={`${content}\n\nCheck out this post on SaaSFoundr!`}
+                separator="\n\n"
+                className="hover:opacity-80 transition-opacity"
+              >
+                <WhatsappIcon size={32} round />
+              </WhatsappShareButton>
+            </div>
+          </div>
         </div>
       </PopoverContent>
     </Popover>

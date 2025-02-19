@@ -99,7 +99,7 @@ export function Posts() {
               <BookmarkIcon className="h-4 w-4" />
               <span>Save</span>
             </Button>
-            <SharePopover postId={post.post_id} />
+            <SharePopover postId={post.post_id} content={post.content} />
           </div>
         </article>
       ))}
