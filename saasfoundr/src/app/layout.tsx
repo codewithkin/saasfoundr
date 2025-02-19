@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { QueryProvider } from "@/providers/query-provider";
 import { NextUIClientProvider } from "@/providers/nextui-provider";
+import { Toaster } from "sonner";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -100,6 +101,7 @@ export default function RootLayout({
             <NextUIClientProvider>
               {children}
             </NextUIClientProvider>
+            <Toaster richColors visibleToasts={20} />
           </QueryProvider>
         </ThemeProvider>
       </body>
