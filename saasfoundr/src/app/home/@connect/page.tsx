@@ -27,5 +27,11 @@ export default async function ConnectPage() {
     take: 5,
   });
 
-  return <Connect users={recommendedUsers} />;
+  if(recommendedUsers.length > 0) {
+    return <Connect users={recommendedUsers} />;
+  }
+
+  const allUsers = await prisma.user.findMany();
+
+  return <Connect users={allUsers} />;
 }
