@@ -27,7 +27,7 @@ export default function Sidebar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <div className="hidden md:flex min-h-screen w-[70px] flex-col items-center justify-between border-r bg-background p-3">
+      <div className="hidden md:flex min-h-screen max-h-screen w-[70px] flex-col items-center justify-between border-r bg-background p-3">
         <article className="space-y-8">
           {/* App Icon */}
           <Link href="/home" className="flex items-center justify-center">
