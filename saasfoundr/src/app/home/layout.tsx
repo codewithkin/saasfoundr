@@ -4,12 +4,12 @@ export default function HomeLayout({
   children,
   connect,
   posts,
-  extras,
+  connections,
 }: {
   children: React.ReactNode;
   connect: React.ReactNode;
   posts: React.ReactNode;
-  extras: React.ReactNode;
+  connections: React.ReactNode;
 }) {
   return (
     <div className="flex max-h-screen md:overflow-hidden min-h-screen">
@@ -25,7 +25,7 @@ export default function HomeLayout({
               {posts}
             </div>
             <div className="hidden lg:block md:w-1/4">
-              {extras}
+              {connections}
             </div>
           </div>
         </main>
