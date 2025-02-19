@@ -11,27 +11,41 @@ export default async function ConnectPage() {
 
   const currentUser = await prisma.user.findUnique({
     where: { email: session.user.email },
+    include: {
+      connections: true
+    }
   });
-
-  if (!currentUser?.lookingFor) {
-    return null;
-  }
-
+  
   const recommendedUsers = await prisma.user.findMany({
     where: {
-      role: currentUser.lookingFor,
+      role: currentUser?.lookingFor,
       NOT: {
         email: session.user.email,
       },
     },
     take: 5,
+    include: {
+      connections: true,
+      followedBy: true
+    }
   });
+  
+  const usersWithConnectionStatus = recommendedUsers.map(user => ({
+    ...user,
+    isConnected: currentUser?.connections.some(
+      connection => connection.id === user.id
+    )
+  }));
 
   if(recommendedUsers.length > 0) {
-    return <Connect users={recommendedUsers} />;
+    return <Connect users={usersWithConnectionStatus} />;
   }
 
-  const allUsers = await prisma.user.findMany();
+  const allUsers = await prisma.user.findMany({
+    include: {
+      connections: true
+    }
+  });
 
   return <Connect users={allUsers} />;
 }

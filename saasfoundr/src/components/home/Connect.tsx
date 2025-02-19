@@ -10,14 +10,61 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { UserPlus, UserPlus2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { connectWithUser } from "@/app/actions/connect";
+import { useState } from "react";
+import { toast } from "sonner";
+import { getCurrentUser } from "@/app/actions/user";
+import { useQuery } from "@tanstack/react-query";
+import { UserSkeletonList } from "@/components/skeletons/UserSkeleton";
+import { Loader2 } from "lucide-react";
 
 interface ConnectProps {
-  users: User[];
+  users: (User & { isConnected: boolean })[]
 }
 
-export function Connect({ users }: ConnectProps) {
+export function Connect({ users: initialUsers }: ConnectProps) {
+  const [users, setUsers] = useState(initialUsers);
+  const [loading, setLoading] = useState<string | null>(null);
+
+  const { data: currentUser, isLoading: isCurrentUserLoading } = useQuery({
+    queryKey: ['user'],
+    queryFn: getCurrentUser,
+    enabled: !!initialUsers,
+  });
+
+  const handleConnect = async (userId: string) => {
+    try {
+      setLoading(userId);
+      const result = await connectWithUser(userId);
+      
+      if (result.success) {
+        setUsers(users.map(user => {
+          if (user.id === userId) {
+            return { ...user, isConnected: result.isConnected };
+          }
+          return user;
+        }));
+        
+        toast.success(
+          result.isConnected
+            ? `You're now following ${result.targetUser.name}`
+            : `You've unfollowed ${result.targetUser.name || ""}`
+        );
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (error) {
+      toast.error("Failed to update connection");
+    } finally {
+      setLoading(null);
+    }
+  };
+
+  if (isCurrentUserLoading) {
+    return <UserSkeletonList />;
+  }
+
   return (
     <div className="space-y-4 scroll-effect">
       <h2 className="text-xl font-semibold">Connect</h2>
@@ -34,8 +81,18 @@ export function Connect({ users }: ConnectProps) {
                 <CardDescription>{user.role}</CardDescription>
               </div>
 
-              <Button className="bg-blue-500 hover:bg-blue-700" size="icon">
-                <UserPlus2 size={20} />
+              <Button 
+                variant={user?.connections?.some((connection: User) => connection.id === currentUser?.id) ? "outline" : "default"}
+                onClick={() => handleConnect(user.id)}
+                disabled={loading === user.id}
+              >
+                {loading === user.id ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : user?.connections?.some((connection: User) => connection.id === currentUser?.id) ? (
+                  "Connected"
+                ) : (
+                  "Connect"
+                )}
               </Button>
             </CardHeader>
             <CardContent>

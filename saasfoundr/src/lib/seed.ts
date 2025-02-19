@@ -69,16 +69,47 @@ const users = [
   }
 ];
 
+const samplePosts = [
+  "Just launched our new SaaS product! 🚀",
+  "Looking for a technical co-founder for my startup",
+  "Great meeting with potential investors today",
+  "Sharing my experience building MVPs",
+  "Anyone interested in joining our beta testing?",
+  "Milestone achieved: 1000 users! 🎉",
+  "Need feedback on our new UI design",
+  "Tips for scaling your SaaS business",
+  "Lessons learned from my first startup",
+  "Seeking mentorship in product development",
+];
+
 async function seed() {
   console.log('🌱 Seeding database...');
+
+  const createdUsers = [];
   
   for (const user of users) {
-    await prisma.user.upsert({
+    const newUser = await prisma.user.upsert({
       where: { email: user.email },
       update: user,
       create: user,
     });
+
+    createdUsers.push(newUser);
   }
+
+  // Create 25 random posts
+for (let i = 0; i < 25; i++) {
+  const randomUser = createdUsers[Math.floor(Math.random() * createdUsers.length)];
+  const randomPost = samplePosts[Math.floor(Math.random() * samplePosts.length)];
+  
+  await prisma.post.create({
+    data: {
+      user_id: randomUser.id,
+      content: randomPost,
+      created_at: new Date(Date.now() - Math.floor(Math.random() * 7 * 24 * 60 * 60 * 1000)) // Random date within the last week
+    }
+  });
+}
 
   console.log('✅ Database seeded successfully!');
 }

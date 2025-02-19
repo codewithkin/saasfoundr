@@ -20,7 +20,7 @@ export function TopBar({ user }: TopBarProps) {
   const greeting = getGreeting(displayName);
 
   return (
-    <div className="w-full border-b px-4 py-4 bg-background">
+    <div className="w-full md:w-fit border-b px-4 py-4 bg-background">
       <div className="container mx-auto">
         <h1 className="text-2xl font-medium">
           {greeting}
