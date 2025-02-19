@@ -3,10 +3,11 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { BookmarkIcon, HeartIcon, MessageCircleIcon } from 'lucide-react';
+import { Bookmark, BookmarkCheck, HeartIcon, MessageCircleIcon } from 'lucide-react';
 import { SharePopover } from './SharePopover';
 import { getPosts } from '@/app/actions/post';
 import { toggleLike } from '@/app/actions/like';
+import { toggleSave } from '@/app/actions/save';
 import { formatDistanceToNow } from 'date-fns';
 import { UserSkeletonList } from '../skeletons/UserSkeleton';
 import { cn } from '@/lib/utils';
@@ -43,6 +44,31 @@ export function Posts() {
       // If the API call fails, revert the optimistic update
       queryClient.invalidateQueries({ queryKey: ['posts'] });
       console.error('Error toggling like:', error);
+    }
+  };
+
+  const handleSave = async (postId: string) => {
+    try {
+      // Optimistically update the UI
+      queryClient.setQueryData(['posts'], (oldData: any) => {
+        return oldData.map((post: any) => {
+          if (post.post_id === postId) {
+            return {
+              ...post,
+              isSaved: !post.isSaved,
+              saveCount: post.isSaved ? post.saveCount - 1 : post.saveCount + 1
+            };
+          }
+          return post;
+        });
+      });
+
+      // Make the API call
+      await toggleSave(postId);
+    } catch (error) {
+      // If the API call fails, revert the optimistic update
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      console.error('Error toggling save:', error);
     }
   };
 
@@ -95,9 +121,21 @@ export function Posts() {
               <MessageCircleIcon className="h-4 w-4" />
               <span>Comment</span>
             </Button>
-            <Button variant="ghost" size="sm" className="space-x-2">
-              <BookmarkIcon className="h-4 w-4" />
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className={cn("space-x-2", post.isSaved && "text-blue-500")} 
+              onClick={() => handleSave(post.post_id)}
+            >
+              {post.isSaved ? (
+                <BookmarkCheck className="h-4 w-4 fill-current" />
+              ) : (
+                <Bookmark className="h-4 w-4" />
+              )}
               <span>Save</span>
+              {post.saveCount > 0 && (
+                <span className="ml-1 text-sm text-muted-foreground">({post.saveCount})</span>
+              )}
             </Button>
             <SharePopover postId={post.post_id} content={post.content} />
           </div>

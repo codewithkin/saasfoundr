@@ -3,7 +3,9 @@ import { prisma, auth } from "@/lib/auth";
 
 export async function getPosts() {
   const session = await auth();
-  const userId = session?.user?.id;
+  const user = session?.user?.email ? await prisma.user.findUnique({
+    where: { email: session.user.email }
+  }) : null;
 
   const posts = await prisma.post.findMany({
     orderBy: {
@@ -18,29 +20,38 @@ export async function getPosts() {
           role: true
         }
       },
-      likes: {
-        where: userId ? {
-          user: {
-            id: userId
-          }
-        } : undefined,
+      likes: user ? {
+        where: {
+          userId: user.id
+        },
         select: {
           id: true
         }
-      },
+      } : undefined,
+      saves: user ? {
+        where: {
+          userId: user.id
+        },
+        select: {
+          id: true
+        }
+      } : undefined,
       _count: {
         select: {
-          likes: true
+          likes: true,
+          saves: true
         }
       }
     }
   });
 
-  const postsWithLikeInfo = posts.map(post => ({
+  const postsWithInfo = posts.map(post => ({
     ...post,
-    isLiked: post.likes.length > 0,
-    likeCount: post._count.likes
+    isLiked: post.likes?.length > 0,
+    likeCount: post._count.likes,
+    isSaved: post.saves?.length > 0,
+    saveCount: post._count.saves
   }));
 
-  return postsWithLikeInfo;
+  return postsWithInfo;
 }
