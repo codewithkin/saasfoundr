@@ -89,7 +89,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${poppins.variable} font-poppins`}>
+      <body className={`${poppins.variable} font-poppins md:min-h-screen md:overflow-y-hidden md:max-h-screen`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
