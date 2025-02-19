@@ -1,6 +1,6 @@
 import Sidebar from "@/components/sidebar/Sidebar";
-import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export default async function HomeLayout({
   children,
@@ -8,15 +8,14 @@ export default async function HomeLayout({
   children: React.ReactNode;
 }) {
   const session = await auth();
-
-  if (!session) {
-    redirect('/auth/signup');
+  if (!session?.user) {
+    redirect("/");
   }
 
   return (
-    <div className="flex">
+    <div className="flex md:flex-row flex-col-reverse min-h-screen">
       <Sidebar />
-      <main className="flex-1 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto md:pb-0 pb-20">
         {children}
       </main>
     </div>
