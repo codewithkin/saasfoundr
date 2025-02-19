@@ -1,5 +1,6 @@
+'use client';
+
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
 import { Home, Users, Search, MessageSquare, Settings } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -8,10 +9,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useQuery } from '@tanstack/react-query';
+import { getCurrentUser } from '@/app/actions/user';
 
 export function Sidebar() {
-  const { data: session } = useSession();
-  const user = session?.user;
+  const { data: user } = useQuery({
+    queryKey: ['user'],
+    queryFn: getCurrentUser
+  });
 
   return (
     <div className="flex min-h-screen flex-col justify-between border-r bg-background p-3">

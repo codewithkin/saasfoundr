@@ -1,10 +1,18 @@
 import { Sidebar } from "@/components/sidebar/Sidebar";
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 
-export default function HomeLayout({
+export default async function HomeLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
+
+  if (!session) {
+    redirect('/auth/signup');
+  }
+
   return (
     <div className="flex">
       <Sidebar />
