@@ -15,6 +15,7 @@ import { useRef, useState } from "react";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { useQueryClient } from "@tanstack/react-query";
 import { createPost } from "@/app/actions/post";
+import { searchUsers } from "@/app/actions/user";
 import { toast } from "sonner";
 
 export function CreatePostDialog() {
@@ -23,17 +24,56 @@ export function CreatePostDialog() {
   const [loading, setLoading] = useState(false);
   const [charCount, setCharCount] = useState(0);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [userSuggestions, setUserSuggestions] = useState<any[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [cursorPosition, setCursorPosition] = useState(0);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
+  const suggestionsRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const queryClient = useQueryClient();
   const MAX_CHARS = 500;
 
   useClickOutside(emojiPickerRef, () => setShowEmojiPicker(false));
+  useClickOutside(suggestionsRef, () => setShowSuggestions(false));
 
-  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleUserSelect = (username: string) => {
+    const beforeCursor = content.slice(0, cursorPosition);
+    const afterCursor = content.slice(cursorPosition);
+    const lastAtSymbol = beforeCursor.lastIndexOf('@');
+    const newContent = beforeCursor.slice(0, lastAtSymbol) + '@' + username + ' ' + afterCursor;
+    
+    if (newContent.length <= MAX_CHARS) {
+      setContent(newContent);
+      setCharCount(newContent.length);
+    }
+    setShowSuggestions(false);
+  };
+
+  const handleContentChange = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
     if (text.length <= MAX_CHARS) {
       setContent(text);
       setCharCount(text.length);
+      setCursorPosition(e.target.selectionStart);
+
+      // Check for @ symbol
+      const beforeCursor = text.slice(0, e.target.selectionStart);
+      const lastAtSymbol = beforeCursor.lastIndexOf('@');
+      const lastSpaceBeforeAt = beforeCursor.lastIndexOf(' ', lastAtSymbol);
+      const query = beforeCursor.slice(lastAtSymbol + 1);
+
+      if (
+        lastAtSymbol !== -1 && // Has @
+        (lastSpaceBeforeAt === -1 || lastSpaceBeforeAt < lastAtSymbol) && // @ is at start or after space
+        query.length > 0 && // Has text after @
+        !query.includes(' ') // No spaces in query
+      ) {
+        const users = await searchUsers(query);
+        setUserSuggestions(users);
+        setShowSuggestions(users.length > 0);
+      } else {
+        setShowSuggestions(false);
+      }
     }
   };
 
@@ -81,11 +121,35 @@ export function CreatePostDialog() {
           <div className="space-y-2">
             <div className="relative">
               <Textarea
-                placeholder="What's on your mind?"
+                ref={textareaRef}
+                placeholder="What's on your mind? Use @ to mention users and # for hashtags"
                 value={content}
                 onChange={handleContentChange}
                 className="min-h-[120px] resize-none"
               />
+              {showSuggestions && (
+                <div 
+                  ref={suggestionsRef}
+                  className="absolute top-full left-0 mt-1 w-64 max-h-48 overflow-y-auto bg-background border rounded-md shadow-lg"
+                >
+                  {userSuggestions.map((user) => (
+                    <button
+                      key={user.id}
+                      className="w-full px-4 py-2 text-left hover:bg-muted flex items-center space-x-2"
+                      onClick={() => handleUserSelect(user.username)}
+                    >
+                      <Avatar className="h-6 w-6">
+                        <AvatarImage src={user.image || undefined} />
+                        <AvatarFallback>{user.name?.[0]}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 truncate">
+                        <div className="font-medium">{user.name}</div>
+                        <div className="text-sm text-muted-foreground">@{user.username}</div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
               <Button
                 variant="ghost"
                 size="sm"

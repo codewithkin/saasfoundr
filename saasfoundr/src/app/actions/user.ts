@@ -32,3 +32,27 @@ export async function getCurrentUser() {
 
   return user;
 }
+
+export async function searchUsers(query: string) {
+  if (!query || query.length < 1) {
+    return [];
+  }
+
+  const users = await prisma.user.findMany({
+    where: {
+      OR: [
+        { name: { contains: query, mode: 'insensitive' } },
+        { username: { contains: query, mode: 'insensitive' } }
+      ]
+    },
+    select: {
+      id: true,
+      name: true,
+      username: true,
+      image: true
+    },
+    take: 5
+  });
+
+  return users;
+}

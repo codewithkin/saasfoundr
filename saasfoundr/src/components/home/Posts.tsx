@@ -13,6 +13,7 @@ import { UserSkeletonList } from '../skeletons/UserSkeleton';
 import { cn } from '@/lib/utils';
 import { CommentDialog } from './CommentDialog';
 import { CreatePostDialog } from './CreatePostDialog';
+import { FormattedContent } from './FormattedContent';
 
 export function Posts() {
   const queryClient = useQueryClient();
@@ -108,7 +109,7 @@ export function Posts() {
 
           {/* Post Content */}
           <div className="space-y-4 mb-4">
-            <p className="text-base">{post.content}</p>
+            <FormattedContent content={post.content} />
           </div>
 
           {/* Actions */}
