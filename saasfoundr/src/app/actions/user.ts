@@ -35,6 +35,12 @@ export async function getCurrentUser() {
 
 export async function getAllUsers() {
   const users = await prisma.user.findMany({
+    where: {
+      OR: [
+        { username: { not: null } },
+        { name: { not: null } }
+      ]
+    },
     select: {
       id: true,
       name: true,

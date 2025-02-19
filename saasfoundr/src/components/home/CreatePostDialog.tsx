@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { PenSquare, Smile } from "lucide-react";
 import { useRef, useState } from "react";
 import { useClickOutside } from "@/hooks/useClickOutside";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createPost } from "@/app/actions/post";
 import { getAllUsers } from "@/app/actions/user";
 import { toast } from "sonner";
@@ -78,10 +78,11 @@ export function CreatePostDialog() {
           setShowSuggestions(true);
         } else if (!query.includes(' ')) { // No spaces in query
           // Filter users based on query
-          const filtered = allUsers.filter(user => 
-            user.username.toLowerCase().includes(query) || 
-            user.name.toLowerCase().includes(query)
-          );
+          const filtered = allUsers.filter(user => {
+            const username = user.username?.toLowerCase() || '';
+            const name = user.name?.toLowerCase() || '';
+            return username.includes(query) || name.includes(query);
+          });
           setFilteredUsers(filtered);
           setShowSuggestions(filtered.length > 0);
         } else {
@@ -152,7 +153,7 @@ export function CreatePostDialog() {
                     <button
                       key={user.id}
                       className="w-full px-4 py-2 text-left hover:bg-muted flex items-center space-x-2"
-                      onClick={() => handleUserSelect(user.username)}
+                      onClick={() => handleUserSelect(user.username || user.name || '')}
                     >
                       <Avatar className="h-6 w-6">
                         <AvatarImage src={user.image || undefined} />
@@ -160,7 +161,9 @@ export function CreatePostDialog() {
                       </Avatar>
                       <div className="flex-1 truncate">
                         <div className="font-medium">{user.name}</div>
-                        <div className="text-sm text-muted-foreground">@{user.username}</div>
+                        <div className="text-sm text-muted-foreground">
+                          {user.username ? `@${user.username}` : 'No username set'}
+                        </div>
                       </div>
                     </button>
                   ))}
