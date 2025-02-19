@@ -2,6 +2,8 @@
 import { Check, X, HelpCircle } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Button } from "../ui/button";
+import WaitListModal from "./WaitListModal";
 
 const plans = [
   {
@@ -49,6 +51,7 @@ const plans = [
 export default function Pricing() {
   const [isYearly, setIsYearly] = useState(false);
   const [hoveredTooltip, setHoveredTooltip] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <motion.section
@@ -144,7 +147,8 @@ export default function Pricing() {
                   </div>
                 ))}
               </div>
-              <button
+              <Button
+                onClick={() => setIsModalOpen(true)}
                 className={`w-full mt-8 px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
                   plan.popular
                     ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 shadow-lg hover:shadow-xl"
@@ -152,11 +156,17 @@ export default function Pricing() {
                 }`}
               >
                 Save my seat
-              </button>
+              </Button>
             </div>
           ))}
         </div>
       </div>
+
+        {/* WaitList Modal */}
+        <WaitListModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </motion.section>
   );
 }

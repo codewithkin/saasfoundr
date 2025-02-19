@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import WaitListModal from "./WaitListModal";
+import { Button } from "../ui/button";
 
 export default function Hero() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,13 +41,13 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button
+            <Button
               onClick={() => setIsModalOpen(true)}
               className="px-8 py-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center gap-2"
             >
               Join Waitlist
               <ArrowRight className="w-5 h-5" />
-            </button>
+            </Button>
             <Link
               href="/about"
               className="px-8 py-4 bg-gray-100 text-gray-800 rounded-lg font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 transition-colors"
