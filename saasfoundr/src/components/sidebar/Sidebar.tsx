@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Home, Users, Search, MessageSquare, Settings } from 'lucide-react';
-import {Avatar} from "@heroui/avatar";
+import { Avatar } from "@nextui-org/react";
 import {
   Tooltip,
   TooltipContent,
@@ -11,41 +11,38 @@ import {
 } from "@/components/ui/tooltip";
 import { useQuery } from '@tanstack/react-query';
 import { getCurrentUser } from '@/app/actions/user';
+import Image from 'next/image';
 
-const iconStyles = {
-  home: "text-[#00ff88] hover:text-[#00ff88]/80",
-  hub: "text-[#ff00ff] hover:text-[#ff00ff]/80",
-  discover: "text-[#00ffff] hover:text-[#00ffff]/80",
-  messages: "text-[#ffff00] hover:text-[#ffff00]/80",
-  settings: "text-[#ff3366] hover:text-[#ff3366]/80",
-};
-
-export function Sidebar() {
+export default function Sidebar() {
   const { data: user } = useQuery({
     queryKey: ['user'],
     queryFn: getCurrentUser
   });
 
   return (
-    <div className="flex min-h-screen flex-col justify-between border-r bg-background p-3">
+    <div className="flex min-h-screen flex-col items-center justify-between border-r bg-background p-3">
       <article className="space-y-8">
         {/* App Icon */}
         <Link href="/home" className="flex items-center gap-2">
-          <div className="h-8 w-8">
-            <img src="/logo.png" alt="SaaSFoundr" className="h-full w-full object-contain" />
-          </div>
+        <Image 
+          src="/brand/logo.png"
+          alt="SaaSFoundr Logo"
+          width={50}
+          height={50}
+        />
         </Link>
 
-        {/* Navigation Links */}
-        <nav className="flex flex-col space-y-4">
+        {/* Navigation */}
+        <nav className="flex flex-col justify-center items-center gap-6">
           <TooltipProvider>
+            {/* Home */}
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link 
+                <Link
                   href="/home"
-                  className="flex h-10 w-10 items-center justify-center rounded-lg hover:bg-accent/10"
+                  className="flex items-center gap-2"
                 >
-                  <Home className={`h-5 w-5 ${iconStyles.home}`} />
+                  <Home className="h-6 w-6 icon-gradient" />
                 </Link>
               </TooltipTrigger>
               <TooltipContent side="right">
@@ -53,13 +50,14 @@ export function Sidebar() {
               </TooltipContent>
             </Tooltip>
 
+            {/* Hub */}
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link 
+                <Link
                   href="/home/hub"
-                  className="flex h-10 w-10 items-center justify-center rounded-lg hover:bg-accent/10"
+                  className="flex items-center gap-2"
                 >
-                  <Users className={`h-5 w-5 ${iconStyles.hub}`} />
+                  <Users className="h-6 w-6 icon-gradient" />
                 </Link>
               </TooltipTrigger>
               <TooltipContent side="right">
@@ -67,13 +65,14 @@ export function Sidebar() {
               </TooltipContent>
             </Tooltip>
 
+            {/* Discover */}
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link 
+                <Link
                   href="/home/discover"
-                  className="flex h-10 w-10 items-center justify-center rounded-lg hover:bg-accent/10"
+                  className="flex items-center gap-2"
                 >
-                  <Search className={`h-5 w-5 ${iconStyles.discover}`} />
+                  <Search className="h-6 w-6 icon-gradient" />
                 </Link>
               </TooltipTrigger>
               <TooltipContent side="right">
@@ -81,13 +80,14 @@ export function Sidebar() {
               </TooltipContent>
             </Tooltip>
 
+            {/* Messages */}
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link 
+                <Link
                   href="/home/messages"
-                  className="flex h-10 w-10 items-center justify-center rounded-lg hover:bg-accent/10"
+                  className="flex items-center gap-2"
                 >
-                  <MessageSquare className={`h-5 w-5 ${iconStyles.messages}`} />
+                  <MessageSquare className="h-6 w-6 icon-gradient" />
                 </Link>
               </TooltipTrigger>
               <TooltipContent side="right">
@@ -98,15 +98,17 @@ export function Sidebar() {
         </nav>
       </article>
 
-      <article className="space-y-4">
+      {/* Footer */}
+      <footer className="space-y-6">
         <TooltipProvider>
+          {/* Settings */}
           <Tooltip>
             <TooltipTrigger asChild>
-              <Link 
+              <Link
                 href="/home/settings"
-                className="flex h-10 w-10 items-center justify-center rounded-lg hover:bg-accent/10"
+                className="flex items-center gap-2"
               >
-                <Settings className={`h-5 w-5 ${iconStyles.settings}`} />
+                <Settings className="h-6 w-6 icon-gradient" />
               </Link>
             </TooltipTrigger>
             <TooltipContent side="right">
@@ -114,17 +116,19 @@ export function Sidebar() {
             </TooltipContent>
           </Tooltip>
 
+          {/* Profile */}
           <Tooltip>
             <TooltipTrigger asChild>
-              <Link 
+              <Link
                 href="/home/profile"
                 className="block"
               >
                 <Avatar 
-                  src={user?.image || ""}
-                  color='primary'
-                  size='sm'
+                  src={user?.image || undefined}
+                  name={user?.name || undefined}
+                  size="sm"
                   isBordered
+                  className="transition-transform hover:scale-105"
                 />
               </Link>
             </TooltipTrigger>
@@ -133,7 +137,7 @@ export function Sidebar() {
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-      </article>
+      </footer>
     </div>
   );
 }
