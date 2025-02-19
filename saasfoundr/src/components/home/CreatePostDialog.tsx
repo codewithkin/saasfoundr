@@ -15,8 +15,9 @@ import { useRef, useState } from "react";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { useQueryClient } from "@tanstack/react-query";
 import { createPost } from "@/app/actions/post";
-import { searchUsers } from "@/app/actions/user";
+import { getAllUsers } from "@/app/actions/user";
 import { toast } from "sonner";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export function CreatePostDialog() {
   const [open, setOpen] = useState(false);
@@ -24,7 +25,7 @@ export function CreatePostDialog() {
   const [loading, setLoading] = useState(false);
   const [charCount, setCharCount] = useState(0);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [userSuggestions, setUserSuggestions] = useState<any[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [cursorPosition, setCursorPosition] = useState(0);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
@@ -32,6 +33,12 @@ export function CreatePostDialog() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const queryClient = useQueryClient();
   const MAX_CHARS = 500;
+
+  // Fetch all users
+  const { data: allUsers = [] } = useQuery({
+    queryKey: ['users'],
+    queryFn: getAllUsers
+  });
 
   useClickOutside(emojiPickerRef, () => setShowEmojiPicker(false));
   useClickOutside(suggestionsRef, () => setShowSuggestions(false));
@@ -60,17 +67,26 @@ export function CreatePostDialog() {
       const beforeCursor = text.slice(0, e.target.selectionStart);
       const lastAtSymbol = beforeCursor.lastIndexOf('@');
       const lastSpaceBeforeAt = beforeCursor.lastIndexOf(' ', lastAtSymbol);
-      const query = beforeCursor.slice(lastAtSymbol + 1);
+      const query = beforeCursor.slice(lastAtSymbol + 1).toLowerCase();
 
-      if (
-        lastAtSymbol !== -1 && // Has @
-        (lastSpaceBeforeAt === -1 || lastSpaceBeforeAt < lastAtSymbol) && // @ is at start or after space
-        query.length > 0 && // Has text after @
-        !query.includes(' ') // No spaces in query
+      if (lastAtSymbol !== -1 && // Has @
+          (lastSpaceBeforeAt === -1 || lastSpaceBeforeAt < lastAtSymbol) // @ is at start or after space
       ) {
-        const users = await searchUsers(query);
-        setUserSuggestions(users);
-        setShowSuggestions(users.length > 0);
+        if (query.length === 0) {
+          // Show all users when @ is just typed
+          setFilteredUsers(allUsers);
+          setShowSuggestions(true);
+        } else if (!query.includes(' ')) { // No spaces in query
+          // Filter users based on query
+          const filtered = allUsers.filter(user => 
+            user.username.toLowerCase().includes(query) || 
+            user.name.toLowerCase().includes(query)
+          );
+          setFilteredUsers(filtered);
+          setShowSuggestions(filtered.length > 0);
+        } else {
+          setShowSuggestions(false);
+        }
       } else {
         setShowSuggestions(false);
       }
@@ -132,7 +148,7 @@ export function CreatePostDialog() {
                   ref={suggestionsRef}
                   className="absolute top-full left-0 mt-1 w-64 max-h-48 overflow-y-auto bg-background border rounded-md shadow-lg"
                 >
-                  {userSuggestions.map((user) => (
+                  {filteredUsers.map((user) => (
                     <button
                       key={user.id}
                       className="w-full px-4 py-2 text-left hover:bg-muted flex items-center space-x-2"
