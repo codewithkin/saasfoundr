@@ -9,13 +9,25 @@ import { formatDistanceToNow } from 'date-fns';
 import { UserSkeletonList } from '../skeletons/UserSkeleton';
 
 export function Posts() {
-  const { data: posts, isLoading } = useQuery({
+  console.log('Posts component: Starting to fetch posts');
+  const { data: posts, isLoading, error } = useQuery({
     queryKey: ['posts'],
-    queryFn: getPosts
+    queryFn: async () => {
+      console.log('Posts component: Calling getPosts function');
+      const result = await getPosts();
+      console.log('Posts component: Got result from getPosts:', result);
+      return result;
+    }
   });
 
   if (isLoading) {
+    console.log('Posts component: Loading...');
     return <UserSkeletonList />;
+  }
+
+  if (error) {
+    console.error('Posts component: Error fetching posts:', error);
+    return <div>Error loading posts</div>;
   }
 
   return (

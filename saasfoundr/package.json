@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "seed": "ts-node src/lib/seed.ts"
   },
   "dependencies": {
     "@auth/core": "^0.37.4",
@@ -40,6 +41,9 @@
     "sonner": "^2.0.0",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7"
+  },
+  "prisma": {
+    "seed": "ts-node src/lib/seed.ts"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

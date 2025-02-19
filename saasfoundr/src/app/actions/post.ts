@@ -1,13 +1,9 @@
-import { auth } from "@/lib/auth";
+"use server";
 import { prisma } from "@/lib/auth";
 
 export async function getPosts() {
-  const session = await auth();
 
-  if (!session?.user?.email) {
-    throw new Error("Not authenticated");
-  }
-
+  console.log('getPosts: About to query posts');
   const posts = await prisma.post.findMany({
     orderBy: {
       created_at: 'desc'
