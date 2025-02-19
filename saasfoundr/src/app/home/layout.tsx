@@ -1,23 +1,35 @@
 import Sidebar from "@/components/sidebar/Sidebar";
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
 
-export default async function HomeLayout({
+export default function HomeLayout({
   children,
+  connect,
+  posts,
+  extras,
 }: {
   children: React.ReactNode;
+  connect: React.ReactNode;
+  posts: React.ReactNode;
+  extras: React.ReactNode;
 }) {
-  const session = await auth();
-  if (!session?.user) {
-    redirect("/");
-  }
-
   return (
-    <div className="flex md:flex-row flex-col-reverse min-h-screen">
+    <div className="flex min-h-screen">
       <Sidebar />
-      <main className="flex-1 overflow-y-auto md:pb-0 pb-20">
+      <div className="flex-1">
         {children}
-      </main>
+        <main className="flex-1 flex justify-center">
+          <div className="w-full max-w-7xl grid grid-cols-1 md:grid-cols-[300px_600px_300px] gap-4 p-4">
+            <div className="hidden md:block">
+              {connect}
+            </div>
+            <div>
+              {posts}
+            </div>
+            <div className="hidden lg:block">
+              {extras}
+            </div>
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
