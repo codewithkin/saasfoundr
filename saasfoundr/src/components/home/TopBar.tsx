@@ -15,8 +15,9 @@ interface TopBarProps {
 }
 
 export function TopBar({ user }: TopBarProps) {
-  const name = user?.name?.split(" ")[0] || "there";
-  const greeting = getGreeting(name);
+  const firstName = user?.name?.split(" ")[0];
+  const displayName = firstName || "user";
+  const greeting = getGreeting(displayName);
 
   return (
     <div className="w-full border-b px-4 py-4 bg-background">

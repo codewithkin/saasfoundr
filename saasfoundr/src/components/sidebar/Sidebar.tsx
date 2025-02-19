@@ -7,8 +7,11 @@ import { useQuery } from '@tanstack/react-query';
 import { getCurrentUser } from '@/app/actions/user';
 import Image from 'next/image';
 import { MobileNav } from './MobileNav';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 export default function Sidebar() {
+  const pathname = usePathname();
   const { data: user } = useQuery({
     queryKey: ['user'],
     queryFn: getCurrentUser,
@@ -33,34 +36,54 @@ export default function Sidebar() {
           <nav className="flex flex-col gap-6 w-full">
             <Link
               href="/home"
-              className="flex items-center gap-3 hover:bg-accent/10 p-2 rounded-lg transition-colors"
+              className={cn(
+                "flex items-center gap-3 p-2 rounded-lg transition-colors",
+                pathname === "/home" 
+                  ? "bg-blue-500 text-white font-semibold"
+                  : "hover:bg-accent/10"
+              )}
             >
-              <Home className="h-5 w-5 icon-gradient" />
-              <span className="font-medium">Home</span>
+              <Home className="h-5 w-5" />
+              <span>Home</span>
             </Link>
 
             <Link
               href="/home/hub"
-              className="flex items-center gap-3 hover:bg-accent/10 p-2 rounded-lg transition-colors"
+              className={cn(
+                "flex items-center gap-3 p-2 rounded-lg transition-colors",
+                pathname === "/home/hub"
+                  ? "bg-blue-500 text-white font-semibold"
+                  : "hover:bg-accent/10"
+              )}
             >
-              <Users className="h-5 w-5 icon-gradient" />
-              <span className="font-medium">Hub</span>
+              <Users className="h-5 w-5" />
+              <span>Hub</span>
             </Link>
 
             <Link
               href="/home/discover"
-              className="flex items-center gap-3 hover:bg-accent/10 p-2 rounded-lg transition-colors"
+              className={cn(
+                "flex items-center gap-3 p-2 rounded-lg transition-colors",
+                pathname === "/home/discover"
+                  ? "bg-blue-500 text-white font-semibold"
+                  : "hover:bg-accent/10"
+              )}
             >
-              <Search className="h-5 w-5 icon-gradient" />
-              <span className="font-medium">Discover</span>
+              <Search className="h-5 w-5" />
+              <span>Discover</span>
             </Link>
 
             <Link
               href="/home/messages"
-              className="flex items-center gap-3 hover:bg-accent/10 p-2 rounded-lg transition-colors"
+              className={cn(
+                "flex items-center gap-3 p-2 rounded-lg transition-colors",
+                pathname === "/home/messages"
+                  ? "bg-blue-500 text-white font-semibold"
+                  : "hover:bg-accent/10"
+              )}
             >
-              <MessageSquare className="h-5 w-5 icon-gradient" />
-              <span className="font-medium">Messages</span>
+              <MessageSquare className="h-5 w-5" />
+              <span>Messages</span>
             </Link>
           </nav>
         </article>
@@ -69,15 +92,25 @@ export default function Sidebar() {
         <footer className="space-y-4 w-full">
           <Link
             href="/home/settings"
-            className="flex items-center gap-3 hover:bg-accent/10 p-2 rounded-lg transition-colors"
+            className={cn(
+              "flex items-center gap-3 p-2 rounded-lg transition-colors",
+              pathname === "/home/settings"
+                ? "bg-blue-500 text-white font-semibold"
+                : "hover:bg-accent/10"
+            )}
           >
-            <Settings className="h-5 w-5 icon-gradient" />
-            <span className="font-medium">Settings</span>
+            <Settings className="h-5 w-5" />
+            <span>Settings</span>
           </Link>
 
           <Link
             href="/home/profile"
-            className="flex items-center gap-3 hover:bg-accent/10 p-2 rounded-lg transition-colors"
+            className={cn(
+              "flex items-center gap-3 p-2 rounded-lg transition-colors",
+              pathname === "/home/profile"
+                ? "bg-blue-500 text-white font-semibold"
+                : "hover:bg-accent/10"
+            )}
           >
             <Avatar 
               src={user?.image || undefined}
@@ -86,7 +119,7 @@ export default function Sidebar() {
               isBordered
               className="transition-transform hover:scale-105"
             />
-            <span className="font-medium">Profile</span>
+            <span>Profile</span>
           </Link>
         </footer>
       </div>
