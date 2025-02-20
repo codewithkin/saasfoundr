@@ -55,3 +55,52 @@ export async function getAllUsers() {
 
   return users;
 }
+
+export async function getRecommendedUsers() {
+  const session = await auth();
+  const user = session?.user;
+
+  if (!user) {
+    return [];
+  }
+
+  // Get users who are not connected with the current user
+  const users = await prisma.user.findMany({
+    where: {
+      NOT: {
+        OR: [
+          { id: user.id }, // Exclude current user
+          {
+            connections: {
+              some: {
+                id: user.id
+              }
+            }
+          }
+        ]
+      }
+    },
+    select: {
+      id: true,
+      name: true,
+      username: true,
+      image: true,
+      role: true,
+      bio: true,
+      connections: {
+        where: {
+          id: user.id
+        },
+        select: {
+          id: true
+        }
+      }
+    },
+    orderBy: [
+      { createdAt: 'desc' } // Prioritize newer users
+    ],
+    take: 15 // Limit to 15 recommendations
+  });
+
+  return users;
+}
