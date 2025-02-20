@@ -1,29 +1,30 @@
-'use client';
+import { getRecommendedUsers } from "@/app/actions/user";
+import { ConnectUserCard } from "@/components/shared/ConnectUserCard";
+import { SearchUsers } from "@/components/hub/SearchUsers";
 
-import { UserList } from "@/components/hub/UserList";
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
-import { useState } from "react";
-
-export default function HubPage() {
-  const [searchQuery, setSearchQuery] = useState('');
+export default async function HubPage() {
+  // Get recommended users server-side
+  const users = await getRecommendedUsers();
 
   return (
     <main className="container max-w-7xl mx-auto px-4 py-8">
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-8">
         <h1 className="text-3xl font-bold">Hub</h1>
         
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input
-            placeholder="Search users..."
-            className="pl-10"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
+        <SearchUsers />
 
-        <UserList searchQuery={searchQuery} />
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Recommended Users</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {users.map((user) => (
+              <ConnectUserCard 
+                key={user.id} 
+                user={user}
+                variant="compact"
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </main>
   );
