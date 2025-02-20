@@ -1,10 +1,10 @@
 import { getRecommendedUsers } from "@/app/actions/user";
-import { ConnectUserCard } from "@/components/shared/ConnectUserCard";
 import { SearchUsers } from "@/components/hub/SearchUsers";
+import { UserTabs } from "@/components/hub/UserTabs";
 
 export default async function HubPage() {
   // Get recommended users server-side
-  const users = await getRecommendedUsers();
+  const recommendedUsers = await getRecommendedUsers();
 
   return (
     <main className="container max-w-7xl mx-auto px-4 py-8">
@@ -13,18 +13,7 @@ export default async function HubPage() {
         
         <SearchUsers />
 
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold">Recommended Users</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {users.map((user) => (
-              <ConnectUserCard 
-                key={user.id} 
-                user={user}
-                variant="compact"
-              />
-            ))}
-          </div>
-        </div>
+        <UserTabs recommendedUsers={recommendedUsers} />
       </div>
     </main>
   );
