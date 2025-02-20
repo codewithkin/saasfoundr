@@ -9,14 +9,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { MessageCircleIcon, SendIcon } from "lucide-react";
-import { useState } from "react";
+import { MessageCircleIcon, SendIcon, Smile } from "lucide-react";
+import { useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { addComment, getComments } from "@/app/actions/comment";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatDistanceToNow } from "date-fns";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import EmojiPicker, { Theme } from 'emoji-picker-react';
+import { useClickOutside } from "@/hooks/useClickOutside";
 
 interface CommentDialogProps {
   postId: string;
@@ -29,7 +31,11 @@ export function CommentDialog({ postId, commentCount }: CommentDialogProps) {
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(false);
   const [replyTo, setReplyTo] = useState<{ id: string; name: string } | null>(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const emojiPickerRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
+
+  useClickOutside(emojiPickerRef, () => setShowEmojiPicker(false));
 
   const loadComments = async () => {
     try {
@@ -109,12 +115,35 @@ export function CommentDialog({ postId, commentCount }: CommentDialogProps) {
         <div className="mt-4 space-y-4">
           {/* Comment Input */}
           <div className="space-y-2">
-            <Textarea
-              placeholder={replyTo ? `Reply to ${replyTo.name}...` : "Add a comment..."}
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              className="min-h-[80px]"
-            />
+            <div className="relative">
+              <Textarea
+                placeholder={replyTo ? `Reply to ${replyTo.name}...` : "Add a comment..."}
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                className="min-h-[80px]"
+              />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="absolute bottom-2 right-2 h-8 w-8 p-0"
+                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              >
+                <Smile className="h-5 w-5" />
+              </Button>
+              {showEmojiPicker && (
+                <div ref={emojiPickerRef} className="absolute bottom-12 right-0 z-50">
+                  <EmojiPicker
+                    theme={Theme.AUTO}
+                    onEmojiClick={(emojiData) => {
+                      setNewComment(newComment + emojiData.emoji);
+                      setShowEmojiPicker(false);
+                    }}
+                    width={300}
+                    height={400}
+                  />
+                </div>
+              )}
+            </div>
             <div className="flex justify-between items-center">
               {replyTo && (
                 <Button
