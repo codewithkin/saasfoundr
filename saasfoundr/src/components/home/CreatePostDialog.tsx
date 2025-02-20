@@ -123,8 +123,8 @@ export function CreatePostDialog() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button 
-          size="lg" 
-          className="fixed bottom-6 right-6 shadow-lg rounded-full h-10 w-14 p-0 md:h-auto md:w-auto md:p-6 md:rounded-lg"
+          size="sm" 
+          className="fixed z-20 bottom-6 right-6 shadow-lg rounded-full h-10 w-14 p-0 md:h-auto md:w-auto md:p-4 md:rounded-lg"
         >
           <PenSquare className="h-6 w-6 md:mr-2" />
           <span className="hidden md:inline">Create Post</span>
