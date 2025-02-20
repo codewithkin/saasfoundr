@@ -1,7 +1,7 @@
 import { getCurrentUser, getLatestUsers } from "@/app/actions/user";
 import { prisma } from "@/lib/auth";
-import { SearchBar } from "@/components/shared/SearchBar";
 import { ConnectUserCard } from "@/components/shared/ConnectUserCard";
+import { SearchSection } from "./search";
 import {
   Card,
   CardContent,
@@ -44,9 +44,7 @@ export default async function DiscoverPage() {
             Connect with founders, discover products, and join the conversation
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <SearchBar placeholder="Search for products, users, or posts..." />
-        </CardContent>
+        <SearchSection currentUser={currentUser} />
       </Card>
 
       {/* New Users Section */}

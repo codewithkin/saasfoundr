@@ -6,31 +6,28 @@ import { Input } from '../ui/input';
 
 interface SearchBarProps {
   placeholder?: string;
-  onSearch?: (query: string) => void;
+  value?: string;
+  onChange?: (value: string) => void;
 }
 
-export function SearchBar({ placeholder = 'Search...', onSearch }: SearchBarProps) {
-  const [query, setQuery] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (onSearch) {
-      onSearch(query);
+export function SearchBar({ placeholder = 'Search...', value = '', onChange }: SearchBarProps) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (onChange) {
+      onChange(e.target.value);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full">
-      <div className="relative flex items-center">
-        <Input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={placeholder}
-          className="w-full px-4 py-2 pl-10 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        />
+    <div className="relative flex items-center w-full">
+      <Search className="absolute left-3 w-5 h-5 text-gray-400" />
+      <Input
+        type="text"
+        value={value}
+        onChange={handleChange}
+        placeholder={placeholder}
+        className="pl-10"
+      />
         <Search className="absolute left-3 w-5 h-5 text-gray-400" />
       </div>
-    </form>
   );
 }
