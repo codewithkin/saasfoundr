@@ -56,6 +56,31 @@ export async function getAllUsers() {
   return users;
 }
 
+export async function getLatestUsers() {
+  const users = await prisma.user.findMany({
+    where: {
+      OR: [
+        { username: { not: null } },
+        { name: { not: null } }
+      ]
+    },
+    select: {
+      id: true,
+      name: true,
+      username: true,
+      image: true,
+      bio: true,
+      createdAt: true
+    },
+    orderBy: {
+      createdAt: 'desc'
+    },
+    take: 5 // Get 5 most recent users
+  });
+
+  return users;
+}
+
 export async function getRecommendedUsers() {
   const session = await auth();
   const user = session?.user;
@@ -99,7 +124,7 @@ export async function getRecommendedUsers() {
     orderBy: [
       { createdAt: 'desc' } // Prioritize newer users
     ],
-    take: 15 // Limit to 15 recommendations
+    take: 30 // Limit to 30 recommendations
   });
 
   return users;

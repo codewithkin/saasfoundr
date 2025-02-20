@@ -29,22 +29,9 @@ export function UserTabs({ recommendedUsers }: UserTabsProps) {
   return (
     <Tabs defaultValue="recommended" className="w-full">
       <TabsList className="mb-4">
-        <TabsTrigger value="recommended">Recommended</TabsTrigger>
         <TabsTrigger value="all">All Users</TabsTrigger>
+        <TabsTrigger value="recommended">Recommended</TabsTrigger>
       </TabsList>
-
-      <TabsContent value="recommended" className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {recommendedUsers.map((user) => (
-            <ConnectUserCard 
-              key={user.id} 
-              user={user}
-              currentUser={currentUser}
-              variant="compact"
-            />
-          ))}
-        </div>
-      </TabsContent>
 
       <TabsContent value="all" className="space-y-4">
         {isLoading ? (
@@ -61,6 +48,19 @@ export function UserTabs({ recommendedUsers }: UserTabsProps) {
             ))}
           </div>
         )}
+      </TabsContent>
+
+      <TabsContent value="recommended" className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {recommendedUsers.map((user) => (
+            <ConnectUserCard 
+              key={user.id} 
+              user={user}
+              currentUser={currentUser}
+              variant="compact"
+            />
+          ))}
+        </div>
       </TabsContent>
     </Tabs>
   );

@@ -53,7 +53,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   posts         Post[]
-  saasProducts  SaaSProduct[]
+  saasProducts  SaaSProduct[] @relation("creator")
   connectionsFrom User[] @relation("UserConnections")
   followedBy User[] @relation("UserFollowedBy")
   
@@ -187,8 +187,14 @@ model SaaSProduct {
   url          String
   description  String   @db.Text
   features     Json
-  users        Int
-  mrr          Float
+  users        Int      @default(0)
+  mrr          Float    @default(0)
   posts        Post[]
-  user         User     @relation(fields: [user_id], references: [id])
+  creator      User     @relation("creator", fields: [user_id], references: [id])
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt @default(now())
+
+  @@index([user_id])
+  @@index([createdAt])
 }
