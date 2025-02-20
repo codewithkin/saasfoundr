@@ -1,6 +1,14 @@
-import { getLatestUsers } from "@/app/actions/user";
+import { getCurrentUser, getLatestUsers } from "@/app/actions/user";
 import { prisma } from "@/lib/auth";
 import { SearchBar } from "@/components/shared/SearchBar";
+import { ConnectUserCard } from "@/components/shared/ConnectUserCard";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 async function getLatestSaaSProducts() {
   const products = await prisma.saaSProduct.findMany({
@@ -24,58 +32,73 @@ async function getLatestSaaSProducts() {
 export default async function DiscoverPage() {
   const latestUsers = await getLatestUsers();
   const trendingSaaS = await getLatestSaaSProducts();
+  const currentUser = await getCurrentUser();
 
   return (
     <div className="space-y-8 p-4 md:p-8">
       {/* Search Section */}
-      <article className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-2xl font-bold mb-4">Explore the SaaSFoundr commmunity</h2>
-        <SearchBar placeholder="Search for products, users, or posts..." />
-      </article>
+      <Card>
+        <CardHeader>
+          <CardTitle>Explore the SaaSFoundr commmunity</CardTitle>
+          <CardDescription>
+            Connect with founders, discover products, and join the conversation
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <SearchBar placeholder="Search for products, users, or posts..." />
+        </CardContent>
+      </Card>
 
       {/* New Users Section */}
-      <article className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-2xl font-bold mb-4">New Users</h2>
-        <div className="space-y-4">
+      <Card>
+        <CardHeader>
+          <CardTitle>New Users</CardTitle>
+          <CardDescription>
+            Connect with the latest members of our community
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
           {latestUsers.map((user) => (
-            <div key={user.id} className="flex items-center space-x-4">
-              <img 
-                src={user.image || '/default-avatar.png'} 
-                alt={user.name || 'User'} 
-                className="w-10 h-10 rounded-full"
-              />
-              <div>
-                <h3 className="font-semibold">{user.name}</h3>
-                <p className="text-sm text-gray-600">{user.bio || 'No bio yet'}</p>
-              </div>
-            </div>
+            <ConnectUserCard 
+              key={user.id} 
+              user={user} 
+              currentUser={currentUser}
+              variant="compact"
+            />
           ))}
-        </div>
-      </article>
+        </CardContent>
+      </Card>
 
       {/* Trending SaaS Products Section */}
-      <article className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-2xl font-bold mb-4">Trending SaaS Products</h2>
-        {trendingSaaS.length > 0 ? (
-          <div className="space-y-4">
-            {trendingSaaS.map((product) => (
-              <div key={product.product_id} className="flex items-center space-x-4">
-                <img 
-                  src={product.image || '/default-product.png'} 
-                  alt={product.saas_name} 
-                  className="w-10 h-10 rounded-lg"
-                />
-                <div>
-                  <h3 className="font-semibold">{product.saas_name}</h3>
-                  <p className="text-sm text-gray-600">{product.description}</p>
+      <Card>
+        <CardHeader>
+          <CardTitle>Trending SaaS Products</CardTitle>
+          <CardDescription>
+            Discover the latest and most exciting SaaS products
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {trendingSaaS.length > 0 ? (
+            <div className="space-y-4">
+              {trendingSaaS.map((product) => (
+                <div key={product.product_id} className="flex items-center space-x-4 p-4 rounded-lg border">
+                  <img 
+                    src={product.image || '/default-product.png'} 
+                    alt={product.saas_name} 
+                    className="w-10 h-10 rounded-lg"
+                  />
+                  <div>
+                    <h3 className="font-semibold">{product.saas_name}</h3>
+                    <p className="text-sm text-muted-foreground">{product.description}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <h3 className="text-xl text-gray-600">No SaaS products here</h3>
-        )}
-      </article>
+              ))}
+            </div>
+          ) : (
+            <p className="text-xl text-muted-foreground">No SaaS products here</p>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
