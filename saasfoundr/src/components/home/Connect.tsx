@@ -1,32 +1,16 @@
 'use client';
 
 import { User } from "@prisma/client";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { connectWithUser } from "@/app/actions/connect";
-import { useState } from "react";
-import { toast } from "sonner";
 import { getCurrentUser } from "@/app/actions/user";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { UserSkeletonList } from "@/components/skeletons/UserSkeleton";
-import { Loader2 } from "lucide-react";
+import { ConnectUserCard } from "@/components/shared/ConnectUserCard";
 
 interface ConnectProps {
   users: (User & { isConnected: boolean })[]
 }
 
 export function Connect({ users: initialUsers }: ConnectProps) {
-  const queryClient = useQueryClient();
-  const [loading, setLoading] = useState<string | null>(null);
-
   const { data: currentUser, isLoading: isCurrentUserLoading } = useQuery({
     queryKey: ['user'],
     queryFn: getCurrentUser,
@@ -39,43 +23,6 @@ export function Connect({ users: initialUsers }: ConnectProps) {
     initialData: initialUsers
   });
 
-  const handleConnect = async (userId: string) => {
-    try {
-      setLoading(userId);
-      const result = await connectWithUser(userId);
-      
-      if (result.success) {
-        // Update both users in the React Query cache
-        queryClient.setQueryData(['recommendedUsers'], (oldUsers: any) => 
-          oldUsers.map((user: any) => 
-            user.id === userId
-              ? { ...user, connections: result.targetUser.connections }
-              : user
-          )
-        );
-
-        if (currentUser) {
-          queryClient.setQueryData(['user'], {
-            ...currentUser,
-            connections: result.currentUser.connections
-          });
-        }
-        
-        toast.success(
-          result.isConnected
-            ? `You're now following ${result.targetUser.name}`
-            : `You've unfollowed ${result.targetUser.name}`
-        );
-      } else {
-        throw new Error(result.error);
-      }
-    } catch (error) {
-      toast.error("Failed to update connection");
-    } finally {
-      setLoading(null);
-    }
-  };
-
   if (isCurrentUserLoading) {
     return <UserSkeletonList />;
   }
@@ -85,35 +32,11 @@ export function Connect({ users: initialUsers }: ConnectProps) {
       <h2 className="text-xl font-semibold">Connect</h2>
       <div className="space-y-4">
         {users.map((user) => (
-          <Card key={user.id}>
-            <CardHeader className="flex flex-row items-center gap-4">
-              <Avatar>
-                <AvatarImage src={user.image || undefined} alt={user.name || "User"} />
-                <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <CardTitle className="text-lg">{user.name}</CardTitle>
-                <CardDescription>{user.role}</CardDescription>
-              </div>
-
-              <Button 
-                variant={user.connections?.some(connection => connection.id === currentUser?.id) ? "outline" : "default"}
-                onClick={() => handleConnect(user.id)}
-                disabled={loading === user.id}
-              >
-                {loading === user.id ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : user.connections?.some(connection => connection.id === currentUser?.id) ? (
-                  "Connected"
-                ) : (
-                  "Connect"
-                )}
-              </Button>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">{user.bio}</p>
-            </CardContent>
-          </Card>
+          <ConnectUserCard 
+            key={user.id} 
+            user={user} 
+            currentUser={currentUser}
+          />
         ))}
       </div>
     </div>
